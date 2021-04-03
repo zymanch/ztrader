@@ -1,0 +1,24 @@
+.checkbox-simple {
+  display: inline-block;
+  cursor: pointer;
+}
+.checkbox-simple input {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
+input[type=checkbox] ~ div {
+  background-image: url(green.png);
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  vertical-align: middle;
+  background-position: 0 0;
+  margin-right: 5px;
+}
+input[type=checkbox]:hover ~ div {
+  background-position: -24px 0;
+}
+input[type=checkbox]:checked ~ div {
+  background-position: -48px 0;
+}

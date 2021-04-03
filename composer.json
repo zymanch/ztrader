@@ -1,0 +1,33 @@
+{
+  "name": "zymanch/ztrader",
+  "description": "Trader",
+  "type": "project",
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=7.2",
+    "yiisoft/yii2": "^2.0.38",
+    "yiisoft/yii2-bootstrap": "^2.0",
+    "yiisoft/yii2-httpclient": "^2.0",
+    "tightenco/collect": "^5.7",
+    "yiisoft/yii2-debug": "~2.1.15",
+    "gtflixtv/active-generator": "dev-master",
+    "gtflixtv/core-contract": "dev-master",
+    "ext-json": "*",
+    "ext-curl": "*"
+  },
+  "config": { "fxp-asset": { "enabled": false } },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    },
+    {
+      "type": "git",
+      "url": "ssh://git@devbase.gtflixtv.com/active-generator.git"
+    },
+    {
+      "type": "vcs",
+      "url": "ssh://git@devbase.gtflixtv.com/core-contract.git"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "mysql":{
+    "mysqlcluster": {
+      "hostname": "localhost",
+      "username": "root",
+      "password":  "",
+      "schema_privilege": {
+        "smock_tests": {"privilege":["select"]},
+        "shared": {"privilege":["select"]}
+      }
+    }
+  }
+}

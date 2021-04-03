@@ -1,0 +1,6 @@
+/config.secure.json
+/src/runtime/cache/*
+/src/runtime/debug/*
+/src/runtime/logs/*
+/public/assets/*
+/config.local.php

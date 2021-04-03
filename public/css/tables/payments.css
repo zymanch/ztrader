@@ -1,0 +1,89 @@
+/* base for table */
+.payments-table td{
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.payments-table{
+    font-size: 0.9em;
+}
+.payments-table td.action-column{
+    overflow: visible;
+}
+.payments-table .holder-info{
+    color: #afafaf;
+    font-size: 12px;
+}
+
+.payments-table .label {font-size: 11px}
+/* base for table*/
+
+/* Extra small devices (phones, less than 768px) */
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    .payments-table .country-column{
+        width: 40px;
+    }
+    .payments-table .is-success-column{
+        width: 60px;
+    }
+    .payments-table .type-column{
+        width: 60px;
+    }
+    .payments-table .created-column{
+        width: 96px;
+    }
+    .payments-table .payment-id-column{
+        width: 70px;
+    }
+    .payments-table .price-column{
+        width: 65px;
+    }
+    .payments-table .action-column{
+        width: 100px;
+    }
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+}
+
+/* Extra large devices (1600 and up) */
+@media (min-width: 1600px) {
+    .payments-table .payment-id-column{
+         width: 90px;
+    }
+    .payments-table .email-column{
+        width: 250px;
+    }
+    .payments-table .country-column{
+        width: 40px;
+    }
+    .payments-table .product-column{
+        width: 300px;
+    }
+    .payments-table .type-column{
+        width: 80px;
+    }
+    .payments-table .price-column{
+        width: 90px;
+    }
+    .payments-table .is-success-column{
+        width: 70px;
+    }
+    .payments-table .message-column{
+        width: 100px;
+    }
+    .payments-table .created-column{
+        width: 120px;
+    }
+    .payments-table .action-column{
+        width: 100px;
+    }
+}

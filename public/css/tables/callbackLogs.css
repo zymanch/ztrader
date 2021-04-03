@@ -1,0 +1,29 @@
+table.json-item {
+    width: 100%;
+}
+.json-item tr {
+    vertical-align: top;
+}
+.json-item tr td:first-child{
+    padding-right: 10px;
+    font-weight: bold;
+}
+.json-item td {
+    padding-bottom: 3px;
+    padding-top: 3px;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.09);
+}
+table.json-item table.json-item td{
+    border-bottom-width: 0;
+    padding-top: 0;
+}
+.json-item td.empty-cell {
+    padding-right: 0 !important;
+}
+span.show-request-link {
+    text-decoration: underline;
+    color: #005ed6;
+}
+span.show-request-link:hover {
+    color: #003468;
+}
