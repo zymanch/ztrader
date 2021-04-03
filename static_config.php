@@ -63,7 +63,7 @@ return [
             'class' => 'backend\components\AssetManager',
         ],
         'user' => [
-            'identityClass' => 'backend\components\User',
+            'identityClass' => 'backend\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
             'loginUrl' => ['login/index'],

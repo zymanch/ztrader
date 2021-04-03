@@ -23,10 +23,8 @@ class ArController extends Controller
     {
         if (!$this->tables) {
             // not for all tables need AR
-            $this->tables = 'smoke_tests:' . implode(',', [
-                    'test','test_log','test_param'
-                ]).';shared:'. implode(',', [
-                    'website','config',
+            $this->tables = 'ztrader:' . implode(',', [
+                    'user'
                 ]);
         }
         $helper = new \ActiveGenerator\generator\ScriptHelper();
