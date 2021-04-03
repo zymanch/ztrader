@@ -11,9 +11,11 @@
     "tightenco/collect": "^5.7",
     "yiisoft/yii2-debug": "~2.1.15",
     "gtflixtv/active-generator": "dev-master",
-    "gtflixtv/core-contract": "dev-master",
+    "khanamiryan/qrcode-detector-decoder": "dev-master",
+    "bacon/bacon-qr-code": "dev-master",
     "ext-json": "*",
-    "ext-curl": "*"
+    "ext-curl": "*",
+    "ext-gd": "*"
   },
   "config": { "fxp-asset": { "enabled": false } },
   "repositories": [

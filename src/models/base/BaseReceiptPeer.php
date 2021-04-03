@@ -9,5 +9,6 @@ class BaseReceiptPeer  {
     const DATE = "date";
     const AMOUNT = "amount";
     const QR_CODE = "qr_code";
+    const CREATED = "created";
 
 }

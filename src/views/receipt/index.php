@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * @var $receipt \backend\models\Receipt
+ */
 use app\extensions\yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
@@ -15,7 +17,7 @@ $form = ActiveForm::begin(); ?>
             <div class="tab-content">
                 <div class="tab-pane active">
                     <div class="panel-body">
-                        <?=$this->render('_index',['form'=>$form]);?>
+                        <?=$this->render('_index',['form'=>$form,'receipt'=>$receipt,'qr_code'=>$qr_code]);?>
                     </div>
                 </div>
 

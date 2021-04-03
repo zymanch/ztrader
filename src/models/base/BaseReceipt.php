@@ -12,6 +12,7 @@ namespace backend\models\base;
  * @property string $date
  * @property string $amount
  * @property string $qr_code
+ * @property string $created
  *
  * @property \backend\models\User $user
  * @property \backend\models\UserReceipt[] $userReceipts
@@ -34,7 +35,7 @@ class BaseReceipt extends \yii\db\ActiveRecord
         return [
             [[BaseReceiptPeer::USER_ID, BaseReceiptPeer::DATE, BaseReceiptPeer::AMOUNT, BaseReceiptPeer::QR_CODE], 'required'],
             [[BaseReceiptPeer::USER_ID], 'integer'],
-            [[BaseReceiptPeer::DATE], 'safe'],
+            [[BaseReceiptPeer::DATE, BaseReceiptPeer::CREATED], 'safe'],
             [[BaseReceiptPeer::AMOUNT], 'number'],
             [[BaseReceiptPeer::QR_CODE], 'string', 'max' => 1000],
             [[BaseReceiptPeer::USER_ID], 'exist', 'skipOnError' => true, 'targetClass' => BaseUser::className(), 'targetAttribute' => [BaseReceiptPeer::USER_ID => BaseUserPeer::USER_ID]],
@@ -52,6 +53,7 @@ class BaseReceipt extends \yii\db\ActiveRecord
             BaseReceiptPeer::DATE => 'Date',
             BaseReceiptPeer::AMOUNT => 'Amount',
             BaseReceiptPeer::QR_CODE => 'Qr Code',
+            BaseReceiptPeer::CREATED => 'Created',
         ];
     }
     /**

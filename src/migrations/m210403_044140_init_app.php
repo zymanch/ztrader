@@ -30,9 +30,10 @@ class m210403_044140_init_app extends Migration
         $this->execute("CREATE TABLE `receipt` (
             `receipt_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
             `user_id` INT(10) UNSIGNED NOT NULL,
-            `date` DATETIME NOT NULL,
+            `date` TIMESTAMP NOT NULL,
             `amount` DECIMAL(10,2) UNSIGNED NOT NULL,
             `qr_code` VARCHAR(1000) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+            `created` TIMESTAMP NULL DEFAULT current_timestamp(),
             PRIMARY KEY (`receipt_id`),
             INDEX `fk-receipt-user` (`user_id`),
             CONSTRAINT `fk-receipt-user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE ON DELETE CASCADE

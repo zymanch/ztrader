@@ -41,7 +41,6 @@ class AppAsset extends AssetBundle
         'js/plugins/footable/footable.min.js',
         'js/plugins/summernote/summernote.min.js',
         'js/plugins/toastr/toastr.min.js',
-        'js/tabs.js',
         'js/clear-form.js',
         'js/navbar-minimalize.js',
         'js/jquery.mCustomScrollbar.concat.min.js',
