@@ -41,20 +41,20 @@ class m210403_044140_init_app extends Migration
         COLLATE='utf8mb4_unicode_ci'
         ENGINE=InnoDB");
         $this->execute("
-        CREATE TABLE `user_receipt` (
-            `user_receipt_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-            `user_id` INT(10) UNSIGNED NOT NULL,
-            `receipt_id` INT(10) UNSIGNED NOT NULL,
-            `status` ENUM('used','skipped') NOT NULL DEFAULT 'used' COLLATE 'utf8mb4_unicode_ci',
-            `created` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
-            PRIMARY KEY (`user_receipt_id`),
-            INDEX `fk-user_receipt-user` (`user_id`),
-            INDEX `fk-user_receipt-receipt` (`receipt_id`),
-            CONSTRAINT `fk-user_receipt-receipt` FOREIGN KEY (`receipt_id`) REFERENCES `receipt` (`receipt_id`) ON UPDATE CASCADE ON DELETE CASCADE,
-            CONSTRAINT `fk-user_receipt-user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE ON DELETE CASCADE
-        )
-        COLLATE='utf8mb4_unicode_ci'
-        ENGINE=InnoDB
+            CREATE TABLE `user_receipt` (
+                `user_receipt_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+                `user_id` INT(10) UNSIGNED NOT NULL,
+                `receipt_id` INT(10) UNSIGNED NOT NULL,
+                `status` ENUM('used','unusable','skipped') NOT NULL DEFAULT 'used' COLLATE 'utf8mb4_unicode_ci',
+                `created` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+                PRIMARY KEY (`user_receipt_id`),
+                INDEX `fk-user_receipt-user` (`user_id`),
+                INDEX `fk-user_receipt-receipt` (`receipt_id`),
+                CONSTRAINT `fk-user_receipt-receipt` FOREIGN KEY (`receipt_id`) REFERENCES `receipt` (`receipt_id`) ON UPDATE CASCADE ON DELETE CASCADE,
+                CONSTRAINT `fk-user_receipt-user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE ON DELETE CASCADE
+            )
+            COLLATE='utf8mb4_unicode_ci'
+            ENGINE=InnoDB
         ");
     }
 
