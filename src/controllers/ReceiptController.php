@@ -8,7 +8,7 @@ use yii\filters\AccessControl;
 /**
  * Site controller
  */
-class HomeController extends Controller
+class ReceiptController extends Controller
 {
 
 
@@ -23,7 +23,7 @@ class HomeController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index'],
+                        'actions' => ['index','create'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -36,6 +36,13 @@ class HomeController extends Controller
     {
 
         return $this->render('index', [
+        ]);
+    }
+
+    public function actionCreate()
+    {
+
+        return $this->render('create', [
         ]);
     }
 

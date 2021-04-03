@@ -1,7 +1,6 @@
 <?php
 namespace backend\controllers;
 
-use backend\components\collect\Service;
 use backend\components\control\WhiteIp;
 use Yii;
 
@@ -20,15 +19,8 @@ abstract class Controller extends \yii\web\Controller
         $this->menuItemList = $this->_prepareMenu();
         $this->mainLink = $this->_getMainLink();
 
-        $this->_initViewParams();
     }
 
-    private function _initViewParams() {
-        $service = new Service();
-        $status = $service->getCurrentStatus();
-        $this->getView()->params['collect_application'] = $status;
-        $this->getView()->params['collect_all'] = $status == Service::GLOBAL_COLLECT;
-    }
 
     public function behaviors() {
         return [
@@ -47,29 +39,17 @@ abstract class Controller extends \yii\web\Controller
     {
         return [
             [
-                'label' => 'Auto tests',
+                'label' => 'Чеки',
                 'url'   => [
-                    'tests/index',
+                    'receipt/index',
                 ]
             ],
             [
-                'label' => 'Applications',
+                'label' => 'Трейдинг',
                 'url'   => [
-                    'application/index',
+                    'traider/index',
                 ]
             ],
-            [
-                'label' => 'Request Params',
-                'url'   => [
-                    'params/index',
-                ]
-            ],
-            [
-                'label' => 'Docs',
-                'url'   => [
-                    'docs/index',
-                ]
-            ]
         ];
     }
 

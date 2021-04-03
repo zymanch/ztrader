@@ -9,5 +9,8 @@
         "shared": {"privilege":["select"]}
       }
     }
+  },
+  "config": {
+    "salt_for_user": "njui6t12*ndF==-S"
   }
 }

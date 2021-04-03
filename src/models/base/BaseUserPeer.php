@@ -10,7 +10,6 @@ class BaseUserPeer  {
     const EMAIL = "email";
     const PASSWORD = "password";
     const AUTH_KEY = "auth_key";
-    const WHITE_IPS = "white_ips";
     const CREATED = "created";
 
 }

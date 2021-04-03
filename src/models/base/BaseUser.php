@@ -13,8 +13,10 @@ namespace backend\models\base;
  * @property string $email
  * @property string $password
  * @property string $auth_key
- * @property string $white_ips
  * @property string $created
+ *
+ * @property \backend\models\Receipt[] $receipts
+ * @property \backend\models\UserReceipt[] $userReceipts
  */
 class BaseUser extends \yii\db\ActiveRecord
 {
@@ -33,7 +35,7 @@ class BaseUser extends \yii\db\ActiveRecord
     {
         return [
             [[BaseUserPeer::USERNAME, BaseUserPeer::EMAIL, BaseUserPeer::PASSWORD, BaseUserPeer::AUTH_KEY], 'required'],
-            [[BaseUserPeer::ROLE, BaseUserPeer::WHITE_IPS], 'string'],
+            [[BaseUserPeer::ROLE], 'string'],
             [[BaseUserPeer::CREATED], 'safe'],
             [[BaseUserPeer::USERNAME, BaseUserPeer::PASSWORD, BaseUserPeer::AUTH_KEY], 'string', 'max' => 64],
             [[BaseUserPeer::EMAIL], 'string', 'max' => 128],
@@ -54,11 +56,22 @@ class BaseUser extends \yii\db\ActiveRecord
             BaseUserPeer::EMAIL => 'Email',
             BaseUserPeer::PASSWORD => 'Password',
             BaseUserPeer::AUTH_KEY => 'Auth Key',
-            BaseUserPeer::WHITE_IPS => 'White Ips',
             BaseUserPeer::CREATED => 'Created',
         ];
     }
-
+    /**
+     * @return \backend\models\ReceiptQuery
+     */
+    public function getReceipts() {
+        return $this->hasMany(\backend\models\Receipt::className(), [BaseReceiptPeer::USER_ID => BaseUserPeer::USER_ID]);
+    }
+        /**
+     * @return \backend\models\UserReceiptQuery
+     */
+    public function getUserReceipts() {
+        return $this->hasMany(\backend\models\UserReceipt::className(), [BaseUserReceiptPeer::USER_ID => BaseUserPeer::USER_ID]);
+    }
+    
     /**
      * @inheritdoc
      * @return \backend\models\UserQuery the active query used by this AR class.

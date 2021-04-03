@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="gray-bg login-page-wrapper">
 
     <div class="text-center">
-        <h1 class="logo-name">STATISTICS</h1>
+        <h1 class="logo-name">TRADER</h1>
     </div>
 
     <div class="middle-box text-center loginscreen animated fadeInDown">

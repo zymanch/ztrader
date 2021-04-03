@@ -66,7 +66,12 @@ class LoginForm extends Model
     protected function getUserIdentity()
     {
         if ($this->_user === null) {
-            $this->_user = new \backend\components\User();
+            if (strpos($this->username,'@')) {
+                $this->_user = User::find()->filterByEmail($this->username)->one();
+            } else {
+                $this->_user = User::find()->filterByUsername($this->username)->one();
+            }
+
         }
         return $this->_user;
     }

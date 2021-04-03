@@ -17,7 +17,7 @@ use app\widgets\InspiniaNav;
             'items' => Yii::$app->controller->menuItemList,
             'dropDownCaret' => '',
             'header' => \app\widgets\MainMenu::widget([
-                'title' => 'SMOKE TESTS',
+                'title' => 'TRAIDER',
             ]),
             'footer' => '<ul class="nav navbar-top-links navbar-right"><!--START-->
                             <li>

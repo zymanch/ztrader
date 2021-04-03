@@ -85,6 +85,7 @@ return [
         ],
     ],
     'params' => [
-        'debug' => true
+        'debug' => true,
+        'salt_for_user'=>$secure['config']['salt_for_user']
     ]
 ];

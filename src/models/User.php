@@ -8,6 +8,11 @@ use yii\web\IdentityInterface;
 
 class User extends BaseUser implements IdentityInterface
 {
+
+
+    private $inputPassword;
+
+
     const ROLE_USER = 'user';
     const ROLE_ADMIN = 'admin';
     const ROLE_TRADER = 'trader';
@@ -45,17 +50,9 @@ class User extends BaseUser implements IdentityInterface
             [['auth_key'], 'string', 'min'=>40, 'max' => 100],
             [['email'], 'unique'],
             [['email'], 'email'],
-            ['white_ips', 'required'],
-            ['white_ips', 'validateWhiteIpList'],
-            ['projects',  'required', 'message' => 'Please select at least one project'],
-            ['projects',  'validateProjectList'],
             ['role', 'in', 'range' => User::ROLES],
         ];
     }
-
-
-
-    private $inputPassword;
 
 
     /**
@@ -108,15 +105,6 @@ class User extends BaseUser implements IdentityInterface
     }
 
 
-    /**
-     * @return array
-     */
-    public function getWhiteIps() {
-        if (!$this->white_ips) {
-            return [];
-        }
-        return array_filter(explode(',', $this->white_ips));
-    }
 
     public static function findIdentity($id) {
         return self::find()->where('user_id = :id', [':id' => $id])->one();
@@ -175,19 +163,6 @@ class User extends BaseUser implements IdentityInterface
         return sha1($password.$this->user_id.\Yii::$app->params['salt_for_user']);
     }
 
-    /**
-     * @param $attribute
-     */
-    public function validateWhiteIpList ($attribute, $params, $validator) {
-        $this->white_ips = preg_replace('/\s+/', '',  $this->white_ips);
-        $ips = explode(',', $this->white_ips);
-        foreach ($ips as $ip) {
-            if (! filter_var($ip, FILTER_VALIDATE_IP)) {
-                $this->addError($attribute, 'Please provide a list of valid IP addresses.');
-                break;
-            }
-        }
-    }
 
     /**
      * @return array

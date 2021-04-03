@@ -12,7 +12,6 @@ use backend\models\UserQuery;
  * @method UserQuery filterByEmail($value, $criteria = null)
  * @method UserQuery filterByPassword($value, $criteria = null)
  * @method UserQuery filterByAuthKey($value, $criteria = null)
- * @method UserQuery filterByWhiteIps($value, $criteria = null)
  * @method UserQuery filterByCreated($value, $criteria = null)
   * @method UserQuery orderByUserId($order = Criteria::ASC)
   * @method UserQuery orderByUsername($order = Criteria::ASC)
@@ -20,8 +19,11 @@ use backend\models\UserQuery;
   * @method UserQuery orderByEmail($order = Criteria::ASC)
   * @method UserQuery orderByPassword($order = Criteria::ASC)
   * @method UserQuery orderByAuthKey($order = Criteria::ASC)
-  * @method UserQuery orderByWhiteIps($order = Criteria::ASC)
   * @method UserQuery orderByCreated($order = Criteria::ASC)
+  * @method UserQuery withReceipts($params = [])
+  * @method UserQuery joinWithReceipts($params = null, $joinType = 'LEFT JOIN')
+  * @method UserQuery withUserReceipts($params = [])
+  * @method UserQuery joinWithUserReceipts($params = null, $joinType = 'LEFT JOIN')
  */
 class BaseUserQuery extends \yii\db\ActiveQuery
 {

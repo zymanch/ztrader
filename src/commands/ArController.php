@@ -24,8 +24,8 @@ class ArController extends Controller
         if (!$this->tables) {
             // not for all tables need AR
             $this->tables = 'ztrader:' . implode(',', [
-                    'user'
-                ]);
+                'user','user_receipt','receipt'
+            ]);
         }
         $helper = new \ActiveGenerator\generator\ScriptHelper();
         $helper->baseClass = 'yii\db\ActiveRecord';
