@@ -51,6 +51,9 @@ class TraderController extends Controller {
         $money = 100;
         $buyCourse = null;
         foreach ($period as $now) {
+            if ($now->format('i:s')=='00:00') {
+                print $now->format('Y-m-d H:i:s')."\n";ob_flush();
+            }
             if ($isBuyer) {
                 if ($buyer->isBuyTime($now)) {
                     $buyTime = $now;
