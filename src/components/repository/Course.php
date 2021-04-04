@@ -32,6 +32,7 @@ class Course {
             ->from($tableName)
             ->where('date<="'.$date->format('Y-m-d H:i:s').'"')
             ->orderBy('date DESC')
+            ->limit(1)
             ->one();
         if ($rate) {
             return $rate['course'];
@@ -44,7 +45,9 @@ class Course {
             ->from($tableName)
             ->where('date<="'.$date->format('Y-m-d H:i:s').'"')
             ->orderBy('date DESC')
+            ->limit(1)
             ->one();
+
         if (!$rate) {
             throw new \RuntimeException('Missed rate for time');
         }

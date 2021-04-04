@@ -28,8 +28,11 @@ class Avg extends Base {
 
         $rates = $course->find($this->currency, $from, $now);
         if (!$rates) {
-            throw new \RuntimeException('Rates not found from period '.$from->format('Y-m-d').' to '.$now->format('Y-m-d'));
+            // throw new \RuntimeException('Rates not found from period '.$from->format('Y-m-d').' to '.$now->format('Y-m-d'));
+            return false;
         }
+
+        $s2 = microtime(1);
         $min = null;
         $max = null;
         $sum = 0;
@@ -44,7 +47,24 @@ class Avg extends Base {
         }
         $avg = $sum/count($rates);
         $barrier = $avg * (1-$this->diff_percent/100);
-        return $course->get($this->currency, $now) <= $barrier;
+
+        if ($course->get($this->currency, $now) > $barrier) {
+            return false;
+        }
+        $inc = 0;
+        $desc = 0;
+        $old = null;
+        foreach (array_slice($rates,-20) as $rate) {
+            if ($old===null) {
+
+            } else if ($rate['course'] > $old) {
+                $inc++;
+            }else if ($rate['course'] < $old) {
+                $desc++;
+            }
+            $old = $rate['course'];
+        }
+        return $inc/2 > $desc/2;
     }
 
 }

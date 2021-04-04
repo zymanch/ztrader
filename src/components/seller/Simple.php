@@ -5,7 +5,7 @@ namespace backend\components\seller;
 use backend\components\repository\Course;
 
 class Simple extends Base {
-    const TYPE = 'avg';
+    const TYPE = 'simple';
 
     protected $currency;
     protected $price;
