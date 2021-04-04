@@ -22,16 +22,37 @@ class m210404_052345_detector extends Migration
         COLLATE='utf8mb4_unicode_ci'
         ENGINE=InnoDB");
         $this->insert('currency',['currency_id'=>1,'code'=>'BTC','name'=>'BitCoin','position'=>1]);
-        $this->execute("CREATE TABLE `detector` (
-            `detector_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-            `type` VARCHAR(50) NOT NULL DEFAULT 'simple' COLLATE 'utf8mb4_unicode_ci',
+        $this->execute("CREATE TABLE `seller` (
+            `seller_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+            `type` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+            `name` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+            PRIMARY KEY (`seller_id`)
+        )
+        COLLATE='utf8mb4_unicode_ci'
+        ENGINE=InnoDB");
+        $this->execute("CREATE TABLE `buyer` (
+            `buyer_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+            `type` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+            `name` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_unicode_ci',
+            PRIMARY KEY (`buyer_id`)
+        )
+        COLLATE='utf8mb4_unicode_ci'
+        ENGINE=InnoDB");
+        $this->execute("CREATE TABLE `trader` (
+            `trader_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
             `name` VARCHAR(64) NOT NULL COLLATE 'utf8mb4_unicode_ci',
-            `currency_id` INT(11) UNSIGNED NOT NULL,
-            `options` TEXT NOT NULL DEFAULT '{}' COLLATE 'utf8mb4_unicode_ci',
-            `status` ENUM('yes','no') NOT NULL DEFAULT 'no' COLLATE 'utf8mb4_unicode_ci',
-            PRIMARY KEY (`detector_id`),
-            INDEX `fk-detector-currency` (`currency_id`),
-            CONSTRAINT `fk-detector-currency` FOREIGN KEY (`currency_id`) REFERENCES `currency` (`currency_id`) ON UPDATE CASCADE ON DELETE CASCADE
+            `buyer_id` INT(10) UNSIGNED NOT NULL,
+            `buyer_options` TEXT NOT NULL DEFAULT '{}' COLLATE 'utf8mb4_unicode_ci',
+            `seller_id` INT(10) UNSIGNED NOT NULL,
+            `seller_options` TEXT NOT NULL DEFAULT '{}' COLLATE 'utf8mb4_unicode_ci',
+            `state` ENUM('selling','buying') NOT NULL DEFAULT 'buying' COLLATE 'utf8mb4_unicode_ci',
+            `state_date` TIMESTAMP NOT NULL,
+            `status` ENUM('enabled','disabled','paused') NOT NULL DEFAULT 'disabled' COLLATE 'utf8mb4_unicode_ci',
+            PRIMARY KEY (`trader_id`),
+            INDEX `fk-traider-buyer` (`buyer_id`),
+            INDEX `fk-traider-seller` (`seller_id`),
+            CONSTRAINT `fk-traider-buyer` FOREIGN KEY (`buyer_id`) REFERENCES `buyer` (`buyer_id`) ON UPDATE CASCADE ON DELETE CASCADE,
+            CONSTRAINT `fk-traider-seller` FOREIGN KEY (`seller_id`) REFERENCES `seller` (`seller_id`) ON UPDATE CASCADE ON DELETE CASCADE
         )
         COLLATE='utf8mb4_unicode_ci'
         ENGINE=InnoDB");

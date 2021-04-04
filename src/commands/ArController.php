@@ -24,7 +24,8 @@ class ArController extends Controller
         if (!$this->tables) {
             // not for all tables need AR
             $this->tables = 'ztrader:' . implode(',', [
-                'user','user_receipt','receipt'
+                'user','user_receipt','receipt',
+                'trader','buyer','seller'
             ]);
         }
         $helper = new \ActiveGenerator\generator\ScriptHelper();

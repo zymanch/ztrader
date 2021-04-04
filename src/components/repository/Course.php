@@ -25,26 +25,54 @@ class Course {
         }
     }
 
+    public function get($currencyCode, \DateTimeImmutable $date)
+    {
+        $tableName = $this->_getTableName($currencyCode, $date->format('Y'), $date->format('m'));
+        $rate = (new Query)
+            ->from($tableName)
+            ->where('date<="'.$date->format('Y-m-d H:i:s').'"')
+            ->orderBy('date DESC')
+            ->one();
+        if ($rate) {
+            return $rate['course'];
+        }
+        $interval = new \DateInterval('P1M');
+        $interval->invert = true;
+        $previous = $date->add($interval);
+        $tableName = $this->_getTableName($currencyCode, $previous->format('Y'), $previous->format('m'));
+        $rate = (new Query)
+            ->from($tableName)
+            ->where('date<="'.$date->format('Y-m-d H:i:s').'"')
+            ->orderBy('date DESC')
+            ->one();
+        if (!$rate) {
+            throw new \RuntimeException('Missed rate for time');
+        }
+        return $rate['course'];
+    }
+
     public function find($currencyCode, \DateTimeInterface $from, \DateTimeInterface $to)
     {
         $fromYear = $from->format('Y');
         $toYear = $to->format('Y');
         $fromMonth = (int)$from->format('m');
-        $toMonth = (int)$to->format('d');
+        $toMonth = (int)$to->format('m');
         $result = [];
         $fromTime = $from->format('d H:i:s');
         $toTime = $to->format('d H:i:s');
 
 
         for ($year=$fromYear;$year<=$toYear;$year++) {
-            for ($month = $year==$fromYear?$fromMonth:1; $month<=$year==$toYear?$toMonth:12;$month++) {
-                $fromDay = $year==$fromYear && $month==$fromMonth ? $from->format('d H:i:s') : '01 00:00:00';
-                $toDay = $year==$toYear && $month==$toMonth ? $to->format('d H:i:s') : date('t',strtotime($year.'-'.$month.'-01')).' 23:59:59';
+            for ($month = ($year==$fromYear?$fromMonth:1); $month<=($year==$toYear?$toMonth:12);$month++) {
+                $fromDay = $year==$fromYear && $month==$fromMonth ? $fromTime : '01 00:00:00';
+                $toDay = $year==$toYear && $month==$toMonth ? $toTime : date('t',strtotime($year.'-'.$month.'-01')).' 23:59:59';
                 $tableName = $this->_getTableName($currencyCode, $year, $month);
-
+                $fromDate = sprintf('%04d-%02d-%s', $year, $month, $fromDay);
+                $toDate = sprintf('%04d-%02d-%s', $year, $month,$toDay);
                 $result[] = (new Query)
                     ->from($tableName)
-                    ->where('date between "'.$year.'-'.$month.'-'.$fromDay.'" and "'.$year.'-'.$month.'-.'.$toDay.'"')
+                    ->where('date between "'.$fromDate.'" and "'.$toDate.'"')
+                    ->orderBy('date ASC')
                     ->all();
             }
         }
