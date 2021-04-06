@@ -4,12 +4,15 @@ namespace backend\controllers;
 
 
 use ActiveGenerator\Criteria;
+use backend\models\base\BaseReceiptPeer;
+use backend\models\base\BaseUserPeer;
+use backend\models\base\BaseUserReceiptPeer;
 use backend\models\forms\UploadReceiptForm;
 use backend\models\Receipt;
 use backend\models\ReceiptQuery;
+use backend\models\UserQuery;
 use backend\models\UserReceipt;
 use backend\models\UserReceiptQuery;
-use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
@@ -37,7 +40,7 @@ class ReceiptController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index','create','view','scanned','unusable','skip'],
+                        'actions' => ['index','create','stats','view','scanned','unusable','skip'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -51,6 +54,28 @@ class ReceiptController extends Controller
         $receipt = $this->_getReceipt();
         return $this->render('index', [
             'receipt' => $receipt,
+        ]);
+    }
+
+    public function actionStats()
+    {
+        $users = UserQuery::model()
+            ->joinWithReceipts(function(ReceiptQuery $query) {$query->select(false);})
+            ->joinWithUserReceipts(function(UserReceiptQuery $query) {$query->select(false);})
+            ->groupBy('user.user_id')
+            ->select([
+                'user.user_id',
+                'user.username',
+                'count(distinct receipt.receipt_id) as receipts_created_count',
+                'count(distinct if(user_receipt.status="used",user_receipt.user_receipt_id,null)) as receipts_used_count',
+                'count(distinct if(user_receipt.status="skipped",user_receipt.user_receipt_id,null)) as receipts_skipped_count',
+                'count(distinct if(user_receipt.status="unusable",user_receipt.user_receipt_id,null)) as receipts_unusable_count',
+            ])
+            ->having('count(distinct user_receipt.user_receipt_id) > 2')
+            ->asArray(true)
+            ->all();
+        return $this->render('stats', [
+            'users' => $users,
         ]);
     }
 

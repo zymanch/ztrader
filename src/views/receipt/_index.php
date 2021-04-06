@@ -7,8 +7,8 @@ use app\extensions\yii\helpers\Html;
 use backend\models\Receipt;
 use yii\helpers\Url;
 
-$used = $receipt->getUserReceipts()->filterByStatus(\backend\models\UserReceipt::STATUS_USED)->count();
-$unusable = $receipt->getUserReceipts()->filterByStatus(\backend\models\UserReceipt::STATUS_UNUSABLE)->count();
+$used = $receipt ? $receipt->getUserReceipts()->filterByStatus(\backend\models\UserReceipt::STATUS_USED)->count() : 0;
+$unusable = $receipt ? $receipt->getUserReceipts()->filterByStatus(\backend\models\UserReceipt::STATUS_UNUSABLE)->count() : 0;
 ?>
 <div class="row">
     <div class="col-md-1"></div>

@@ -1,24 +1,23 @@
 <?php
 /**
- * @var $receipt \backend\models\Receipt
+ * @var $users
  */
 use app\extensions\yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-
-$form = ActiveForm::begin(); ?>
+ ?>
 <div class="row">
     <div class="col-xs-12">
 
         <div class="tabs-container">
             <ul class="nav nav-tabs">
-                <li class="active"><?= Html::a('Список чеков',['receipt/index']);?></li>
+                <li class=""><?= Html::a('Список чеков',['receipt/index']);?></li>
                 <li class=""><?= Html::a('Добавить чек',['receipt/create']);?></li>
-                <li class=""><?= Html::a('Статистика',['receipt/stats']);?></li>
+                <li class="active"><?= Html::a('Статистика',['receipt/stats']);?></li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active">
                     <div class="panel-body">
-                        <?=$this->render('_index',['form'=>$form,'receipt'=>$receipt]);?>
+                        <?=$this->render('_stats',['users'=>$users]);?>
                     </div>
                 </div>
 
@@ -28,4 +27,3 @@ $form = ActiveForm::begin(); ?>
         </div>
     </div>
 </div>
-<?php ActiveForm::end(); ?>

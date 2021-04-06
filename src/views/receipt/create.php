@@ -14,6 +14,7 @@ $form = ActiveForm::begin(['method'=>'post','options' => ['enctype' => 'multipar
             <ul class="nav nav-tabs">
                 <li class=""><?= Html::a('Список чеков',['receipt/index']);?></li>
                 <li class="active"><?= Html::a('Добавить чек',['receipt/create']);?></li>
+                <li class=""><?= Html::a('Статистика',['receipt/stats']);?></li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane" id="tab-none"></div>
