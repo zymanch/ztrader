@@ -10,9 +10,9 @@ use yii\base\Model;
 class ImitationForm extends Model
 {
     public $trader_id;
-    public $from;
+    public $from = '2021-01-01';
     public $to;
-    public $tick_size;
+    public $tick_size = 5;
 
 
     /**
@@ -34,6 +34,16 @@ class ImitationForm extends Model
         $model->to = $this->to;
         $model->status = TraderImitation::STATUS_WAITING;
         return $model->save();
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'trader_id' => 'Трейдер',
+            'from' => 'От даты',
+            'to' => 'До даты',
+            'tick_size' => 'Размер тика, сек',
+        ];
     }
 
 }

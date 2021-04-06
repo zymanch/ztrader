@@ -6,7 +6,7 @@ use app\extensions\yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 ?>
-<?php $form = ActiveForm::begin(['method'=>'post','options' => ['enctype' => 'multipart/form-data']]); ?>
+<?php $form = ActiveForm::begin(['method'=>'post','layout'=>'horizontal']); ?>
 <div class="row">
     <div class="col-xs-12">
         <div class="tabs-container">
@@ -17,7 +17,7 @@ use yii\bootstrap\ActiveForm;
             <div class="tab-content">
                 <div class="tab-pane active">
                     <div class="panel-body">
-                        <?=$this->render('_create',['model'=>$model]);?>
+                        <?=$this->render('_create',['model'=>$model,'form'=>$form]);?>
                     </div>
                 </div>
             </div>
