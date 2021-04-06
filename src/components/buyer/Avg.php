@@ -3,19 +3,18 @@ namespace backend\components\buyer;
 
 
 use backend\components\repository\Course;
+use backend\components\repository\Currency;
 
 class Avg extends Base {
 
     const TYPE = 'avg';
 
-    protected $currency;
     protected $duration;
     protected $diff_percent;
 
     public function getAvailableConfigs():array
     {
         return [
-            'currency' => ['type'=>'currency'],
             'duration' => ['type'=>'integer'],
             'diff_percent' => ['type'=>'decimal','digits'=>2]
         ];
@@ -26,7 +25,7 @@ class Avg extends Base {
         $course = new Course;
         $from = $now->setTimestamp($now->getTimestamp()-$this->duration);
 
-        $rates = $course->find($this->currency, $from, $now);
+        $rates = $course->find($this->_currency->code, $from, $now);
         if (!$rates) {
             // throw new \RuntimeException('Rates not found from period '.$from->format('Y-m-d').' to '.$now->format('Y-m-d'));
             return false;
@@ -48,7 +47,7 @@ class Avg extends Base {
         $avg = $sum/count($rates);
         $barrier = $avg * (1-$this->diff_percent/100);
 
-        if ($course->get($this->currency, $now) > $barrier) {
+        if ($course->get($this->_currency->code, $now) > $barrier) {
             return false;
         }
         $inc = 0;

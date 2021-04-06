@@ -2,10 +2,19 @@
 namespace backend\components\seller;
 
 
+use backend\models\Currency;
+
 abstract class Base {
 
-    public function __construct(array $options)
+
+    /**
+     * @var Currency
+     */
+    protected $_currency;
+
+    public function __construct(Currency $currency, array $options)
     {
+        $this->_currency = $currency;
         foreach ($options as $key => $value) {
             $this->$key = $value;
         }

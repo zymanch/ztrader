@@ -24,7 +24,7 @@ class ArController extends Controller
         if (!$this->tables) {
             // not for all tables need AR
             $this->tables = 'ztrader:' . implode(',', [
-                'user','user_receipt','receipt',
+                'user','user_receipt','receipt','currency',
                 'trader','buyer','seller','trader_imitation','trader_history'
             ]);
         }

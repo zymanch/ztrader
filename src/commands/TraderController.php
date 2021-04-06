@@ -34,10 +34,10 @@ class TraderController extends Controller {
             throw new \InvalidArgumentException('Trader not found');
         }
         $fabric = new buyer\Fabric();
-        $buyer = $fabric->create($trader->buyer_id, $trader->getBuyerOptions());
+        $buyer = $fabric->create($trader->currency_id, $trader->buyer_id, $trader->getBuyerOptions());
 
         $fabric = new seller\Fabric();
-        $seller = $fabric->create($trader->seller_id, $trader->getSellerOptions());
+        $seller = $fabric->create($trader->currency_id, $trader->seller_id, $trader->getSellerOptions());
 
         $from = new \DateTimeImmutable($this->from);
         $to = new \DateTimeImmutable($this->to);

@@ -1,18 +1,20 @@
 <?php
 namespace backend\components\buyer;
 
+use backend\components\repository\Currency;
 use backend\models\BuyerQuery;
 
 class Fabric {
 
-    public function create($buyerId, array $options)
+    public function create($buyerId, $currencyId, array $options)
     {
         $buyer = $this->_getBuyer($buyerId);
+        $currency = $this->_getCurrency($currencyId);
         switch ($buyer->type) {
             case Simple::TYPE:
-                return new Simple($options);
+                return new Simple($currency, $options);
             case Avg::TYPE:
-                return new Avg($options);
+                return new Avg($currency, $options);
             default:
                 throw new \InvalidArgumentException('Unknown buyer type: '.$buyer->type);
         }
@@ -27,6 +29,12 @@ class Fabric {
             throw new \InvalidArgumentException('Buyer not found');
         }
         return $buyer;
+    }
+
+    private function _getCurrency($currencyId)
+    {
+        $repository = new Currency();
+        return $repository->getById($currencyId);
     }
 
 }

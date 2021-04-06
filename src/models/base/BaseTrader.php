@@ -9,6 +9,7 @@ namespace backend\models\base;
  *
  * @property integer $trader_id
  * @property string $name
+ * @property integer $currency_id
  * @property integer $buyer_id
  * @property string $buyer_options
  * @property integer $seller_id
@@ -18,6 +19,7 @@ namespace backend\models\base;
  * @property string $status
  *
  * @property \backend\models\Buyer $buyer
+ * @property \backend\models\Currency $currency
  * @property \backend\models\Seller $seller
  * @property \backend\models\TraderHistory[] $traderHistories
  * @property \backend\models\TraderImitation[] $traderImitations
@@ -38,12 +40,13 @@ class BaseTrader extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [[BaseTraderPeer::NAME, BaseTraderPeer::BUYER_ID, BaseTraderPeer::SELLER_ID], 'required'],
-            [[BaseTraderPeer::BUYER_ID, BaseTraderPeer::SELLER_ID], 'integer'],
+            [[BaseTraderPeer::NAME, BaseTraderPeer::CURRENCY_ID, BaseTraderPeer::BUYER_ID, BaseTraderPeer::SELLER_ID, BaseTraderPeer::STATE_DATE], 'required'],
+            [[BaseTraderPeer::CURRENCY_ID, BaseTraderPeer::BUYER_ID, BaseTraderPeer::SELLER_ID], 'integer'],
             [[BaseTraderPeer::BUYER_OPTIONS, BaseTraderPeer::SELLER_OPTIONS, BaseTraderPeer::STATE, BaseTraderPeer::STATUS], 'string'],
             [[BaseTraderPeer::STATE_DATE], 'safe'],
             [[BaseTraderPeer::NAME], 'string', 'max' => 64],
             [[BaseTraderPeer::BUYER_ID], 'exist', 'skipOnError' => true, 'targetClass' => BaseBuyer::className(), 'targetAttribute' => [BaseTraderPeer::BUYER_ID => BaseBuyerPeer::BUYER_ID]],
+            [[BaseTraderPeer::CURRENCY_ID], 'exist', 'skipOnError' => true, 'targetClass' => BaseCurrency::className(), 'targetAttribute' => [BaseTraderPeer::CURRENCY_ID => BaseCurrencyPeer::CURRENCY_ID]],
             [[BaseTraderPeer::SELLER_ID], 'exist', 'skipOnError' => true, 'targetClass' => BaseSeller::className(), 'targetAttribute' => [BaseTraderPeer::SELLER_ID => BaseSellerPeer::SELLER_ID]],
         ];
     }
@@ -56,6 +59,7 @@ class BaseTrader extends \yii\db\ActiveRecord
         return [
             BaseTraderPeer::TRADER_ID => 'Trader ID',
             BaseTraderPeer::NAME => 'Name',
+            BaseTraderPeer::CURRENCY_ID => 'Currency ID',
             BaseTraderPeer::BUYER_ID => 'Buyer ID',
             BaseTraderPeer::BUYER_OPTIONS => 'Buyer Options',
             BaseTraderPeer::SELLER_ID => 'Seller ID',
@@ -70,6 +74,12 @@ class BaseTrader extends \yii\db\ActiveRecord
      */
     public function getBuyer() {
         return $this->hasOne(\backend\models\Buyer::className(), [BaseBuyerPeer::BUYER_ID => BaseTraderPeer::BUYER_ID]);
+    }
+        /**
+     * @return \backend\models\CurrencyQuery
+     */
+    public function getCurrency() {
+        return $this->hasOne(\backend\models\Currency::className(), [BaseCurrencyPeer::CURRENCY_ID => BaseTraderPeer::CURRENCY_ID]);
     }
         /**
      * @return \backend\models\SellerQuery

@@ -7,14 +7,12 @@ use backend\components\repository\Course;
 class Avg extends Base {
     const TYPE = 'avg';
 
-    protected $currency;
     protected $diff_percent;
     protected $max_loss_percent;
 
     public function getAvailableConfigs():array
     {
         return [
-            'currency' => ['type'=>'currency'],
             'diff_percent' => ['type'=>'decimal','digits'=>2],
             'max_loss_percent' => ['type'=>'decimal','digits'=>2],
         ];
@@ -23,8 +21,8 @@ class Avg extends Base {
     public function isSellTime(\DateTimeImmutable $buyTime, \DateTimeImmutable $now):bool
     {
         $course = new Course;
-        $buyCourse     = $course->get($this->currency, $buyTime);
-        $currentCourse = $course->get($this->currency, $now);
+        $buyCourse     = $course->get($this->_currency->code, $buyTime);
+        $currentCourse = $course->get($this->_currency->code, $now);
 
         $barrier = $buyCourse * (1+$this->diff_percent/100);
         if ($currentCourse>=$barrier) {

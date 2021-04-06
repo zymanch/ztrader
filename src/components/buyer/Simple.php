@@ -21,7 +21,7 @@ class Simple extends Base {
     public function isBuyTime(\DateTimeImmutable $now):bool
     {
         $course = new Course;
-        return $course->get($this->currency, $now) <= $this->price;
+        return $course->get($this->_currency->code, $now) <= $this->price;
     }
 
 }
