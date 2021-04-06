@@ -10,6 +10,7 @@ use backend\models\ReceiptQuery;
 use backend\models\UserReceipt;
 use backend\models\UserReceiptQuery;
 use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
+use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
@@ -64,7 +65,7 @@ class ReceiptController extends Controller
             throw new \RuntimeException('Ошибка генерации чека');
         }
         \Yii::$app->response->format = Response::FORMAT_RAW;
-        header("Content-Type: image/png");
+        header("Content-Type: image/svg+xml");
         return $qrCode;
     }
 
@@ -120,7 +121,7 @@ class ReceiptController extends Controller
         }
         $renderer = new ImageRenderer(
             new RendererStyle(400),
-            new ImagickImageBackEnd()
+            new SvgImageBackEnd()
         );
         $writer = new Writer($renderer);
         return $writer->writeString($receipt->qr_code);

@@ -15,7 +15,7 @@ class m210403_044140_init_app extends Migration
         $this->execute("CREATE TABLE `user` (
             `user_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
             `username` VARCHAR(64) NOT NULL,
-            `role` SET('admin','receipt','traider') NOT NULL DEFAULT 'receipt,traider',
+            `role` SET('admin','receipt','trader') NOT NULL DEFAULT 'receipt,trader',
             `email` VARCHAR(128) NOT NULL,
             `password` VARCHAR(64) NOT NULL,
             `auth_key` VARCHAR(64) NOT NULL,

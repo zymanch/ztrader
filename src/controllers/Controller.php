@@ -47,7 +47,7 @@ abstract class Controller extends \yii\web\Controller
             [
                 'label' => 'Трейдинг',
                 'url'   => [
-                    'traider/index',
+                    'trader/index',
                 ]
             ],
         ];

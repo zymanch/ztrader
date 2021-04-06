@@ -49,10 +49,10 @@ class m210404_052345_detector extends Migration
             `state_date` TIMESTAMP NOT NULL,
             `status` ENUM('enabled','disabled','paused') NOT NULL DEFAULT 'disabled' COLLATE 'utf8mb4_unicode_ci',
             PRIMARY KEY (`trader_id`),
-            INDEX `fk-traider-buyer` (`buyer_id`),
-            INDEX `fk-traider-seller` (`seller_id`),
-            CONSTRAINT `fk-traider-buyer` FOREIGN KEY (`buyer_id`) REFERENCES `buyer` (`buyer_id`) ON UPDATE CASCADE ON DELETE CASCADE,
-            CONSTRAINT `fk-traider-seller` FOREIGN KEY (`seller_id`) REFERENCES `seller` (`seller_id`) ON UPDATE CASCADE ON DELETE CASCADE
+            INDEX `fk-trader-buyer` (`buyer_id`),
+            INDEX `fk-trader-seller` (`seller_id`),
+            CONSTRAINT `fk-trader-buyer` FOREIGN KEY (`buyer_id`) REFERENCES `buyer` (`buyer_id`) ON UPDATE CASCADE ON DELETE CASCADE,
+            CONSTRAINT `fk-trader-seller` FOREIGN KEY (`seller_id`) REFERENCES `seller` (`seller_id`) ON UPDATE CASCADE ON DELETE CASCADE
         )
         COLLATE='utf8mb4_unicode_ci'
         ENGINE=InnoDB");

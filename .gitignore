@@ -4,3 +4,4 @@
 /src/runtime/logs/*
 /public/assets/*
 /config.local.php
+.idea

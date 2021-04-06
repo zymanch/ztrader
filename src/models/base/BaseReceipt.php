@@ -33,7 +33,7 @@ class BaseReceipt extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [[BaseReceiptPeer::USER_ID, BaseReceiptPeer::DATE, BaseReceiptPeer::AMOUNT, BaseReceiptPeer::QR_CODE], 'required'],
+            [[BaseReceiptPeer::USER_ID, BaseReceiptPeer::AMOUNT, BaseReceiptPeer::QR_CODE], 'required'],
             [[BaseReceiptPeer::USER_ID], 'integer'],
             [[BaseReceiptPeer::DATE, BaseReceiptPeer::CREATED], 'safe'],
             [[BaseReceiptPeer::AMOUNT], 'number'],

@@ -42,7 +42,7 @@ class TraderController extends Controller {
         $from = new \DateTimeImmutable($this->from);
         $to = new \DateTimeImmutable($this->to);
 
-        $interval = new \DateInterval('PT1M');
+        $interval = new \DateInterval('PT1S');
         $period = new \DatePeriod($from, $interval, $to);
 
         $course = new Course();

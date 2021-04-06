@@ -28,6 +28,10 @@ use backend\models\TraderQuery;
   * @method TraderQuery joinWithBuyer($params = null, $joinType = 'LEFT JOIN')
   * @method TraderQuery withSeller($params = [])
   * @method TraderQuery joinWithSeller($params = null, $joinType = 'LEFT JOIN')
+  * @method TraderQuery withTraderHistories($params = [])
+  * @method TraderQuery joinWithTraderHistories($params = null, $joinType = 'LEFT JOIN')
+  * @method TraderQuery withTraderImitations($params = [])
+  * @method TraderQuery joinWithTraderImitations($params = null, $joinType = 'LEFT JOIN')
  */
 class BaseTraderQuery extends \yii\db\ActiveQuery
 {

@@ -19,6 +19,8 @@ namespace backend\models\base;
  *
  * @property \backend\models\Buyer $buyer
  * @property \backend\models\Seller $seller
+ * @property \backend\models\TraderHistory[] $traderHistories
+ * @property \backend\models\TraderImitation[] $traderImitations
  */
 class BaseTrader extends \yii\db\ActiveRecord
 {
@@ -36,7 +38,7 @@ class BaseTrader extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [[BaseTraderPeer::NAME, BaseTraderPeer::BUYER_ID, BaseTraderPeer::SELLER_ID, BaseTraderPeer::STATE_DATE], 'required'],
+            [[BaseTraderPeer::NAME, BaseTraderPeer::BUYER_ID, BaseTraderPeer::SELLER_ID], 'required'],
             [[BaseTraderPeer::BUYER_ID, BaseTraderPeer::SELLER_ID], 'integer'],
             [[BaseTraderPeer::BUYER_OPTIONS, BaseTraderPeer::SELLER_OPTIONS, BaseTraderPeer::STATE, BaseTraderPeer::STATUS], 'string'],
             [[BaseTraderPeer::STATE_DATE], 'safe'],
@@ -74,6 +76,18 @@ class BaseTrader extends \yii\db\ActiveRecord
      */
     public function getSeller() {
         return $this->hasOne(\backend\models\Seller::className(), [BaseSellerPeer::SELLER_ID => BaseTraderPeer::SELLER_ID]);
+    }
+        /**
+     * @return \backend\models\TraderHistoryQuery
+     */
+    public function getTraderHistories() {
+        return $this->hasMany(\backend\models\TraderHistory::className(), [BaseTraderHistoryPeer::TRADER_ID => BaseTraderPeer::TRADER_ID]);
+    }
+        /**
+     * @return \backend\models\TraderImitationQuery
+     */
+    public function getTraderImitations() {
+        return $this->hasMany(\backend\models\TraderImitation::className(), [BaseTraderImitationPeer::TRADER_ID => BaseTraderPeer::TRADER_ID]);
     }
     
     /**
