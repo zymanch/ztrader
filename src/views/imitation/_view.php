@@ -8,6 +8,7 @@ use yii\bootstrap\Html;
 /**
  * @var $model TraderImitation
  */
+$money = 100;
 ?>
 <div class="project-list">
     <h2>Имитация <?=$model->trader->name;?>
@@ -42,23 +43,21 @@ use yii\bootstrap\Html;
               [
                   'label'          => 'Дата покупки',
                   'attribute'      => 'date',
-                  'headerOptions'=>['style'=>'width:200px'],
-                  'contentOptions'=>['style'=>'width:200px'],
+                  'headerOptions'=>['style'=>'width:150px'],
+                  'contentOptions'=>['style'=>'width:150px'],
               ],
               [
                   'label'          => 'Дата продажи',
                   'attribute'      => 'sellTraderHistory.date',
-                  'headerOptions'=>['style'=>'width:200px'],
-                  'contentOptions'=>['style'=>'width:200px'],
+                  'headerOptions'=>['style'=>'width:150px'],
+                  'contentOptions'=>['style'=>'width:150px'],
               ],
               [
                   'label'          => 'Цена покупки',
                   'attribute'      => 'course',
                   'value' => function(TraderHistory $history) {
                       return '$'.number_format($history->course, 2);
-                  },
-                  'headerOptions'=>['style'=>'width:200px'],
-                  'contentOptions'=>['style'=>'width:200px'],
+                  }
               ],
               [
                   'label'          => 'Цена продажи',
@@ -68,9 +67,7 @@ use yii\bootstrap\Html;
                           return '';
                       }
                       return '$'.number_format($history->sellTraderHistory->course, 2);
-                  },
-                  'headerOptions'=>['style'=>'width:200px'],
-                  'contentOptions'=>['style'=>'width:200px'],
+                  }
               ],
               [
                   'label'          => 'Комиссия',
@@ -82,8 +79,8 @@ use yii\bootstrap\Html;
                       }
                       return number_format($result, 3).'%';
                   },
-                  'headerOptions'=>['style'=>'width:200px'],
-                  'contentOptions'=>['style'=>'width:200px'],
+                  'headerOptions'=>['style'=>'width:100px'],
+                  'contentOptions'=>['style'=>'width:100px'],
               ],
               [
                   'label'          => 'Разница',
@@ -95,10 +92,25 @@ use yii\bootstrap\Html;
                       $buy = $history->course * (1+$history->comission_percent/100);
                       $sell = $history->sellTraderHistory->course * (1-$history->sellTraderHistory->comission_percent/100);
 
-                      return number_format(100*$sell/$buy, 3).'%';
+                      return number_format(100*$sell/$buy-100, 3).'%';
                   },
-                  'headerOptions'=>['style'=>'width:200px'],
-                  'contentOptions'=>['style'=>'width:200px'],
+                  'headerOptions'=>['style'=>'width:100px'],
+                  'contentOptions'=>['style'=>'width:100px'],
+              ],
+              [
+                  'label'          => 'Итого',
+                  'attribute'      => 'comission_percent',
+                  'value' => function(TraderHistory $history) use (&$money) {
+                      if (!$history->sellTraderHistory) {
+                          return '';
+                      }
+                      $buy = $history->course * (1+$history->comission_percent/100);
+                      $sell = $history->sellTraderHistory->course * (1-$history->sellTraderHistory->comission_percent/100);
+                      $money*=$sell/$buy;
+                      return number_format($money, 3).'%';
+                  },
+                  'headerOptions'=>['style'=>'width:100px'],
+                  'contentOptions'=>['style'=>'width:100px'],
               ]
           ],
     ]);?>
