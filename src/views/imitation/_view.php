@@ -4,14 +4,16 @@ use app\widgets\InspiniaGrid;
 use backend\models\TraderHistory;
 use backend\models\TraderImitation;
 use yii\bootstrap\Html;
-use yii\data\ArrayDataProvider;
 
 /**
  * @var $model TraderImitation
  */
 ?>
 <div class="project-list">
-    <h2>Имитация <?=$model->trader->name;?> с <?=$model->from;?> до <?=$model->to;?></h2>
+    <h2>Имитация <?=$model->trader->name;?>
+        с <?=date('Y-m-d', strtotime($model->from));?>
+        до <?=date('Y-m-d', strtotime($model->to));?></h2>
+
     <?= InspiniaGrid::widget([
           'dataProvider' => new \yii\data\ActiveDataProvider(['query'=>$model->getTraderHistories()->filterByAction(\backend\models\TraderHistory::ACTION_BUY)->orderByDate()]),
           'formatter'    => ['class' => 'yii\i18n\Formatter', 'nullDisplay' => ''],

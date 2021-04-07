@@ -19,12 +19,13 @@ class m210406_160644_imitator extends Migration
                 `trader_id` INT(10) UNSIGNED NOT NULL,
                 `from` TIMESTAMP NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
                 `to` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
-                `tick_size` SMALLINT(5) UNSIGNED NOT NULL DEFAULT '1',
-                `status` ENUM('waiting','processing','finished') NOT NULL DEFAULT 'waiting' COLLATE 'utf8_general_ci',
-                `progress` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
+                `tick_size` SMALLINT(5) UNSIGNED NOT NULL DEFAULT 1,
+                `status` ENUM('waiting','processing','finished') NOT NULL DEFAULT 'waiting',
+                `pid` INT(11) NULL DEFAULT NULL,
+                `progress` TINYINT(3) UNSIGNED NOT NULL DEFAULT 0,
                 PRIMARY KEY (`trader_imitation_id`) USING BTREE,
                 INDEX `fk-trader-emitation-trader` (`trader_id`) USING BTREE,
-                CONSTRAINT `fk-trader-emitation-trader` FOREIGN KEY (`trader_id`) REFERENCES `ztrader`.`trader` (`trader_id`) ON UPDATE CASCADE ON DELETE CASCADE
+                CONSTRAINT `fk-trader-emitation-trader` FOREIGN KEY (`trader_id`) REFERENCES `trader` (`trader_id`) ON UPDATE CASCADE ON DELETE CASCADE
             )
             COLLATE='utf8_general_ci'
             ENGINE=InnoDB");

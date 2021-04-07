@@ -30,8 +30,8 @@ class ImitationForm extends Model
     public function create() {
         $model = new TraderImitation();
         $model->trader_id = $this->trader_id;
-        $model->from = $this->from;
-        $model->to = $this->to;
+        $model->from = $this->from.' 00:00:00';
+        $model->to = $this->to.' 23:59:59';
         $model->status = TraderImitation::STATUS_WAITING;
         return $model->save();
     }

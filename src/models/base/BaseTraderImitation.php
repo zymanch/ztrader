@@ -13,6 +13,7 @@ namespace backend\models\base;
  * @property string $to
  * @property integer $tick_size
  * @property string $status
+ * @property integer $pid
  * @property integer $progress
  *
  * @property \backend\models\TraderHistory[] $traderHistories
@@ -35,7 +36,7 @@ class BaseTraderImitation extends \yii\db\ActiveRecord
     {
         return [
             [[BaseTraderImitationPeer::TRADER_ID], 'required'],
-            [[BaseTraderImitationPeer::TRADER_ID, BaseTraderImitationPeer::TICK_SIZE, BaseTraderImitationPeer::PROGRESS], 'integer'],
+            [[BaseTraderImitationPeer::TRADER_ID, BaseTraderImitationPeer::TICK_SIZE, BaseTraderImitationPeer::PID, BaseTraderImitationPeer::PROGRESS], 'integer'],
             [[BaseTraderImitationPeer::FROM, BaseTraderImitationPeer::TO], 'safe'],
             [[BaseTraderImitationPeer::STATUS], 'string'],
             [[BaseTraderImitationPeer::TRADER_ID], 'exist', 'skipOnError' => true, 'targetClass' => BaseTrader::className(), 'targetAttribute' => [BaseTraderImitationPeer::TRADER_ID => BaseTraderPeer::TRADER_ID]],
@@ -54,6 +55,7 @@ class BaseTraderImitation extends \yii\db\ActiveRecord
             BaseTraderImitationPeer::TO => 'To',
             BaseTraderImitationPeer::TICK_SIZE => 'Tick Size',
             BaseTraderImitationPeer::STATUS => 'Status',
+            BaseTraderImitationPeer::PID => 'Pid',
             BaseTraderImitationPeer::PROGRESS => 'Progress',
         ];
     }

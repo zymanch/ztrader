@@ -38,7 +38,7 @@ class BaseTraderHistory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [[BaseTraderHistoryPeer::TRADER_ID, BaseTraderHistoryPeer::COURSE, BaseTraderHistoryPeer::COMISSION_PERCENT, BaseTraderHistoryPeer::ACTION, BaseTraderHistoryPeer::TYPE], 'required'],
+            [[BaseTraderHistoryPeer::TRADER_ID, BaseTraderHistoryPeer::DATE, BaseTraderHistoryPeer::COURSE, BaseTraderHistoryPeer::COMISSION_PERCENT, BaseTraderHistoryPeer::ACTION, BaseTraderHistoryPeer::TYPE], 'required'],
             [[BaseTraderHistoryPeer::TRADER_ID, BaseTraderHistoryPeer::TRADER_IMITATION_ID, BaseTraderHistoryPeer::BUY_TRADER_HISTORY_ID], 'integer'],
             [[BaseTraderHistoryPeer::DATE], 'safe'],
             [[BaseTraderHistoryPeer::COURSE, BaseTraderHistoryPeer::COMISSION_PERCENT], 'number'],

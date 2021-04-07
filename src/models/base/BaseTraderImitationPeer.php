@@ -10,6 +10,7 @@ class BaseTraderImitationPeer  {
     const TO = "to";
     const TICK_SIZE = "tick_size";
     const STATUS = "status";
+    const PID = "pid";
     const PROGRESS = "progress";
 
 }
