@@ -32,7 +32,7 @@ use yii\data\ArrayDataProvider;
                   'attribute'      => 'name',
                   'format'         => 'raw',
                   'value' => function(TraderImitation $imitation) {
-                      return Html::a(htmlspecialchars($imitation->trader->name),['trader/view','id'=>$imitation->trader_id]);
+                      return Html::a(htmlspecialchars($imitation->trader->name),['imitation/view','id'=>$imitation->trader_imitation_id]);
                   }
               ],
               [

@@ -6,15 +6,19 @@ use backend\models\TraderHistoryQuery;
 
 /**
  * This is the ActiveQuery class for [[backend\models\TraderHistory]].
- * @method TraderHistoryQuery filterByReaderHistoryId($value, $criteria = null)
+ * @method TraderHistoryQuery filterByTraderHistoryId($value, $criteria = null)
  * @method TraderHistoryQuery filterByTraderId($value, $criteria = null)
+ * @method TraderHistoryQuery filterByTraderImitationId($value, $criteria = null)
+ * @method TraderHistoryQuery filterByBuyTraderHistoryId($value, $criteria = null)
  * @method TraderHistoryQuery filterByDate($value, $criteria = null)
  * @method TraderHistoryQuery filterByCourse($value, $criteria = null)
  * @method TraderHistoryQuery filterByComissionPercent($value, $criteria = null)
  * @method TraderHistoryQuery filterByAction($value, $criteria = null)
  * @method TraderHistoryQuery filterByType($value, $criteria = null)
-  * @method TraderHistoryQuery orderByReaderHistoryId($order = Criteria::ASC)
+  * @method TraderHistoryQuery orderByTraderHistoryId($order = Criteria::ASC)
   * @method TraderHistoryQuery orderByTraderId($order = Criteria::ASC)
+  * @method TraderHistoryQuery orderByTraderImitationId($order = Criteria::ASC)
+  * @method TraderHistoryQuery orderByBuyTraderHistoryId($order = Criteria::ASC)
   * @method TraderHistoryQuery orderByDate($order = Criteria::ASC)
   * @method TraderHistoryQuery orderByCourse($order = Criteria::ASC)
   * @method TraderHistoryQuery orderByComissionPercent($order = Criteria::ASC)
@@ -22,6 +26,12 @@ use backend\models\TraderHistoryQuery;
   * @method TraderHistoryQuery orderByType($order = Criteria::ASC)
   * @method TraderHistoryQuery withTrader($params = [])
   * @method TraderHistoryQuery joinWithTrader($params = null, $joinType = 'LEFT JOIN')
+  * @method TraderHistoryQuery withBuyTraderHistory($params = [])
+  * @method TraderHistoryQuery joinWithBuyTraderHistory($params = null, $joinType = 'LEFT JOIN')
+  * @method TraderHistoryQuery withTraderHistories($params = [])
+  * @method TraderHistoryQuery joinWithTraderHistories($params = null, $joinType = 'LEFT JOIN')
+  * @method TraderHistoryQuery withTraderImitation($params = [])
+  * @method TraderHistoryQuery joinWithTraderImitation($params = null, $joinType = 'LEFT JOIN')
  */
 class BaseTraderHistoryQuery extends \yii\db\ActiveQuery
 {

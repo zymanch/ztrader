@@ -20,6 +20,8 @@ use backend\models\TraderImitationQuery;
   * @method TraderImitationQuery orderByTickSize($order = Criteria::ASC)
   * @method TraderImitationQuery orderByStatus($order = Criteria::ASC)
   * @method TraderImitationQuery orderByProgress($order = Criteria::ASC)
+  * @method TraderImitationQuery withTraderHistories($params = [])
+  * @method TraderImitationQuery joinWithTraderHistories($params = null, $joinType = 'LEFT JOIN')
   * @method TraderImitationQuery withTrader($params = [])
   * @method TraderImitationQuery joinWithTrader($params = null, $joinType = 'LEFT JOIN')
  */

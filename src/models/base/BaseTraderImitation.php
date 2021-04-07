@@ -15,6 +15,7 @@ namespace backend\models\base;
  * @property string $status
  * @property integer $progress
  *
+ * @property \backend\models\TraderHistory[] $traderHistories
  * @property \backend\models\Trader $trader
  */
 class BaseTraderImitation extends \yii\db\ActiveRecord
@@ -57,6 +58,12 @@ class BaseTraderImitation extends \yii\db\ActiveRecord
         ];
     }
     /**
+     * @return \backend\models\TraderHistoryQuery
+     */
+    public function getTraderHistories() {
+        return $this->hasMany(\backend\models\TraderHistory::className(), [BaseTraderHistoryPeer::TRADER_IMITATION_ID => BaseTraderImitationPeer::TRADER_IMITATION_ID]);
+    }
+        /**
      * @return \backend\models\TraderQuery
      */
     public function getTrader() {

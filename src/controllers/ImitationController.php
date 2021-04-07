@@ -41,7 +41,7 @@ class ImitationController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index','create'],
+                        'actions' => ['index','create', 'view'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -74,4 +74,16 @@ class ImitationController extends Controller
         ]);
     }
 
+    public function actionView(int $id)
+    {
+        $model = TraderImitationQuery::model()
+            ->filterByTraderImitationId($id)
+            ->one();
+        if (!$model) {
+            throw new NotFoundHttpException();
+        }
+        return $this->render('view', [
+            'model'=>$model
+        ]);
+    }
 }
