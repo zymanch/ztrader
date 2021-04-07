@@ -17,10 +17,10 @@ class m210406_160644_imitator extends Migration
             $this->execute("CREATE TABLE `trader_imitation` (
                 `trader_imitation_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `trader_id` INT(10) UNSIGNED NOT NULL,
-                `from` TIMESTAMP NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-                `to` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+                `from` TIMESTAMP NOT NULL,
+                `to` TIMESTAMP NOT NULL,
                 `tick_size` SMALLINT(5) UNSIGNED NOT NULL DEFAULT 1,
-                `status` ENUM('waiting','processing','finished') NOT NULL DEFAULT 'waiting',
+                `status` ENUM('waiting','processing','finished','failed') NOT NULL DEFAULT 'waiting',
                 `pid` INT(11) NULL DEFAULT NULL,
                 `progress` TINYINT(3) UNSIGNED NOT NULL DEFAULT 0,
                 PRIMARY KEY (`trader_imitation_id`) USING BTREE,

@@ -15,7 +15,10 @@ use yii\bootstrap\Html;
         до <?=date('Y-m-d', strtotime($model->to));?></h2>
 
     <?= InspiniaGrid::widget([
-          'dataProvider' => new \yii\data\ActiveDataProvider(['query'=>$model->getTraderHistories()->filterByAction(\backend\models\TraderHistory::ACTION_BUY)->orderByDate()]),
+          'dataProvider' => new \yii\data\ActiveDataProvider([
+              'query'=>$model->getTraderHistories()->filterByAction(\backend\models\TraderHistory::ACTION_BUY)->orderByDate(),
+              'pagination'=>false
+          ]),
           'formatter'    => ['class' => 'yii\i18n\Formatter', 'nullDisplay' => ''],
           'tableOptions' => [
               'class' => 'table table-striped table-hover table-pointer fixed-table',

@@ -60,8 +60,17 @@ class ImitationController extends Controller {
                 sleep(1);
                 continue;
             }
-            $this->_clearOldPeriod($imitation);
-            $this->_runImitation($imitation);
+            try {
+                $this->_clearOldPeriod($imitation);
+                $this->_runImitation($imitation);
+                $this->stdout('Успешно завершено');
+            } catch (\Throwable $e) {
+                $imitation->status = TraderImitation::STATUS_FAILED;
+                $imitation->progress = 0;
+                $imitation->save(false);
+                $this->stdout('Ошибка имитации: '.$e->getMessage(),Console::FG_RED);
+                $this->stdout($e->getTraceAsString(),Console::FG_RED);
+            }
         }
 
     }
@@ -70,10 +79,10 @@ class ImitationController extends Controller {
 
         $trader = $imitation->trader;
         $fabric = new buyer\Fabric();
-        $buyer = $fabric->create($trader->currency_id, $trader->buyer_id, $trader->getBuyerOptions());
+        $buyer = $fabric->create($trader->buyer_id, $trader->currency_id, $trader->getBuyerOptions());
 
         $fabric = new seller\Fabric();
-        $seller = $fabric->create($trader->currency_id, $trader->seller_id, $trader->getSellerOptions());
+        $seller = $fabric->create($trader->seller_id, $trader->currency_id, $trader->getSellerOptions());
 
         $from = new \DateTimeImmutable($imitation->from);
         $to = new \DateTimeImmutable($imitation->to);
@@ -86,7 +95,7 @@ class ImitationController extends Controller {
         $buyTime = null;
         $money = 100;
         $buyCourse = null;
-        $tickCount = $period->getRecurrences();
+        $tickCount = ($to->getTimestamp()-$from->getTimestamp())/$imitation->tick_size;
         foreach ($period as $index => $now) {
             if ($isBuyer) {
                 if ($buyer->isBuyTime($now)) {
@@ -102,7 +111,7 @@ class ImitationController extends Controller {
                     $money = $money * ($sellCourse/$buyCourse-2*0.075/100);
                     $this->_onSellLogs($now, $imitation, $sellCourse, $money);
                     $this->_onSellHistory($now, $imitation, $sellCourse, $money);
-                    $buyId = null;
+                    $isBuyer = true;
                 }
             }
             if ($index%10==0) {
