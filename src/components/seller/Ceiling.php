@@ -4,8 +4,8 @@ namespace backend\components\seller;
 
 use backend\components\repository\Course;
 
-class Avg extends Base {
-    const TYPE = 'avg';
+class Ceiling extends Base {
+    const TYPE = 'ceiling';
 
     protected $diff_percent;
     protected $max_loss_percent;

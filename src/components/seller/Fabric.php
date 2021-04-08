@@ -13,8 +13,8 @@ class Fabric {
         switch ($seller->type) {
             case Simple::TYPE:
                 return new Simple($currency, $options);
-            case Avg::TYPE:
-                return new Avg($currency, $options);
+            case Ceiling::TYPE:
+                return new Ceiling($currency, $options);
             default:
                 throw new \InvalidArgumentException('Unknown seller type: '.$seller->type);
         }

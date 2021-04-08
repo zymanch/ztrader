@@ -9,6 +9,8 @@ use yii\bootstrap\Html;
  * @var $model TraderImitation
  */
 $money = 100;
+$lastBuyDate=null;
+$lastSellDate=null;
 ?>
 <div class="project-list">
     <h2>Имитация <?=$model->trader->name;?>
@@ -43,14 +45,34 @@ $money = 100;
               [
                   'label'          => 'Дата покупки',
                   'attribute'      => 'date',
-                  'headerOptions'=>['style'=>'width:150px'],
-                  'contentOptions'=>['style'=>'width:150px'],
+                  'headerOptions'=>['style'=>'width:160px'],
+                  'contentOptions'=>['style'=>'width:160px;text-align:right;'],
+                  'value' => function(TraderHistory $history) use (&$lastBuyDate) {
+                      $day = substr($history->date,0,10);
+                      if ($day != $lastBuyDate) {
+                          $lastBuyDate = $day;
+                          return $history->date;
+                      }
+                      return substr($history->date,11);
+                  }
               ],
               [
                   'label'          => 'Дата продажи',
                   'attribute'      => 'sellTraderHistory.date',
-                  'headerOptions'=>['style'=>'width:150px'],
-                  'contentOptions'=>['style'=>'width:150px'],
+                  'headerOptions'=>['style'=>'width:160px'],
+                  'contentOptions'=>['style'=>'width:160px;text-align:right;'],
+                  'value' => function(TraderHistory $history) use (&$lastSellDate) {
+                      if (!$history->sellTraderHistory) {
+                          return '';
+                      }
+                      $date = $history->sellTraderHistory->date;
+                      $day = substr($date,0,10);
+                      if ($day != $lastSellDate) {
+                          $lastSellDate = $day;
+                          return $date;
+                      }
+                      return substr($date,11);
+                  }
               ],
               [
                   'label'          => 'Цена покупки',
