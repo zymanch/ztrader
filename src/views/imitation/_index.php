@@ -7,6 +7,7 @@ use yii\data\ArrayDataProvider;
 
 /**
  * @var $imitations TraderImitation[]
+ * @var $this \yii\web\View
  */
 ?>
 <div class="text-right">
@@ -36,15 +37,40 @@ use yii\data\ArrayDataProvider;
                   }
               ],
               [
+                  'label'          => 'Доходность в месяц',
+                  'format'         => 'raw',
+                  'value' => function(TraderImitation $imitation) {
+                      $income = $imitation->getMonthlyIncome();
+                      $class = 'label ';
+                      if ($income ===null) {
+
+                      } else if ($income < 0) {
+                          $class.='label-danger';
+                      } else if ($income < 10) {
+                          $class.='label-warning';
+                      } else {
+                          $class.='label-success';
+                      }
+                      return '<span id="imitation-income-'.$imitation->trader_imitation_id.'" class="'.$class.'">'.$income.'%</span>';
+                  }
+              ],
+              [
                   'label'          => 'Состояние',
                   'attribute'      => 'status',
+                  'format'=>'raw',
                   'value' => function(TraderImitation $imitation) {
+                      $text = '';
                       switch ($imitation->status) {
                           case TraderImitation::STATUS_PROCESSING:
-                              return 'В процессе';
+                              $text = 'В процессе';break;
                           case TraderImitation::STATUS_WAITING:
-                              return 'В очереди';
+                              $text = 'В очереди';break;
+                          case TraderImitation::STATUS_FAILED:
+                              $text =  'Ошибка';break;
+                          case TraderImitation::STATUS_FINISHED:
+                              $text =  'Завершен';break;
                       }
+                      return '<span id="imitation-status-'.$imitation->trader_imitation_id.'">'.$text.'</span>';
                   },
                   'headerOptions'=>['style'=>'width:200px'],
                   'contentOptions'=>['style'=>'width:200px'],
@@ -52,11 +78,14 @@ use yii\data\ArrayDataProvider;
               [
                   'label'          => 'Прогресс',
                   'attribute'      => 'progress',
+                  'format'=>'raw',
                   'value' => function(TraderImitation $imitation) {
                       if ($imitation->status != TraderImitation::STATUS_PROCESSING) {
-                          return;
+                          $progress = '';
+                      } else{
+                          $progress = number_format($imitation->progress,2).'%';
                       }
-                      return number_format($imitation->progress,2).'%';
+                      return '<span id="imitation-progress-'.$imitation->trader_imitation_id.'">'.$progress.'</span>';
                   },
                   'headerOptions'=>['style'=>'width:200px'],
                   'contentOptions'=>['style'=>'width:200px'],
@@ -66,3 +95,39 @@ use yii\data\ArrayDataProvider;
 
 
 </div>
+<?php
+$this->registerJs("var imitationTimer = function() {
+    setTimeout(function() {
+        $.get('/imitation/status',function(result) {
+            $.each(result.items,function() {
+                var id = this.imitation_id,
+                    \$income = $('#imitation-income-'+id),
+                    \$status = $('#imitation-status-'+id),
+                    \$progress = $('#imitation-progress-'+id);
+                \$income.removeClass('danger warning success');
+                if (this.income < 0) {
+                      \$income.addClass('label-danger');
+                  } else if (this.income < 10) {
+                      \$income.addClass('label-warning');
+                  } else {
+                      \$income.addClass('label-success');
+                  }
+                \$income.html(Math.round(this.income*1000)/1000+'%');
+                \$status.html();
+                switch (this.status) {
+                      case 'processing':
+                          \$status.html('В процессе');break;
+                      case 'waiting':
+                          \$status.html('В очереди');break;
+                      case 'failed':
+                          \$status.html('Ошибка');break;
+                      case 'finished':
+                          \$status.html('Завершен');break;
+                }
+                \$progress.html(this.status=='processing'?Math.round(this.progress*100)/100+'%':'');
+            });
+            imitationTimer();
+        });
+    },2000);
+}
+imitationTimer();");

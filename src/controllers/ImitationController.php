@@ -41,7 +41,7 @@ class ImitationController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index','create', 'view'],
+                        'actions' => ['index','create', 'view','status'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -51,14 +51,33 @@ class ImitationController extends Controller
     }
 
     public function actionIndex() {
-        $imitations = TraderImitationQuery::model()
-               ->filterByStatus(TraderImitation::STATUS_FINISHED, Criteria::NOT_EQUAL)
-               ->orderByStatus()
-               ->orderByTraderImitationId()
-               ->all();
+        $imitations = $this->_getImitations();
         return $this->render('index', [
             'imitations' => $imitations
         ]);
+    }
+
+    public function actionStatus() {
+        $this->response->format = Response::FORMAT_JSON;
+        $result = [];
+        $imitations = $this->_getImitations();
+        foreach ($imitations as $imitation) {
+            $result[] = [
+                'imitation_id'=>$imitation->trader_imitation_id,
+                'status'=>$imitation->status,
+                'progress'=>$imitation->progress,
+                'income'=>$imitation->getMonthlyIncome(),
+            ];
+        }
+        return ['status'=>'ok','items'=>$result];
+    }
+
+    private function _getImitations()
+    {
+        return TraderImitationQuery::model()
+            ->orderByStatus()
+            ->orderByTraderImitationId()
+            ->all();
     }
 
     public function actionCreate()

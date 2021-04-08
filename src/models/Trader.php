@@ -40,6 +40,6 @@ class Trader extends base\BaseTrader {
         $from = new \DateTime(reset($histories)->date);
         $to = new \DateTime(end($histories)->date);
         $duration = $from->diff($to)->days + 1;
-        return round(188 * $result * 30 / $duration,2);
+        return round(100 * $result * 30 / $duration,2);
     }
 }
