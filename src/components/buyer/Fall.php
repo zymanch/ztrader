@@ -9,22 +9,22 @@ class Fall extends Base {
 
     const TYPE = 'fall';
 
-    protected $range_duration;
-    protected $min_range_percent;
-    protected $max_range_percent;
-    protected $diff_percent;
-    protected $inc_range;
-    protected $inc_percent;
+    public $range_duration;
+    public $min_range_percent;
+    public $max_range_percent;
+    public $diff_percent;
+    public $inc_range;
+    public $inc_percent;
 
     public function getAvailableConfigs():array
     {
         return [
-            'range_duration' => ['type'=>'integer'],
-            'min_range_percent' => ['type'=>'decimal','digits'=>2],
-            'max_range_percent' => ['type'=>'decimal','digits'=>2],
-            'diff_percent' => ['type'=>'decimal','digits'=>2],
-            'inc_range' => ['type'=>'integer','digits'=>2],
-            'inc_percent' => ['type'=>'decimal','digits'=>2],
+            'range_duration' => ['type'=>'number'],
+            'min_range_percent' => ['type'=>'number','step'=>0.01],
+            'max_range_percent' => ['type'=>'number','step'=>0.01],
+            'diff_percent' => ['type'=>'number','step'=>0.01],
+            'inc_range' => ['type'=>'number','step'=>0.01],
+            'inc_percent' => ['type'=>'number','step'=>0.01],
         ];
     }
 

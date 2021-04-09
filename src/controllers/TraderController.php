@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 
 use ActiveGenerator\Criteria;
+use backend\components\buyer\Fabric;
 use backend\models\forms\UploadReceiptForm;
 use backend\models\Receipt;
 use backend\models\ReceiptQuery;
@@ -40,7 +41,7 @@ class TraderController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index','create','view','update'],
+                        'actions' => ['index','create','view','update','seller','buyer'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -66,6 +67,55 @@ class TraderController extends Controller
         return $this->render('view', [
             'model' => $trader
         ]);
+    }
+
+    public function actionSeller(int $id)
+    {
+        $trader = TraderQuery::model()->filterByTraderId($id)->one();
+        if (!$trader) {
+            throw new NotFoundHttpException('Трейдер не найден');
+        }
+        $fabric = new \backend\components\seller\Fabric;
+        $seller = $fabric->create($trader->seller_id, $trader->currency_id, $trader->getSellerOptions());
+
+        $request = \Yii::$app->request;
+        if ($request->isPost && $seller->load($request->post()) && $seller->validate()) {
+            $trader->seller_options = json_encode($seller->getAttributes());
+            $trader->save(false);
+            $this->successFlash('Продавец успешно сохранен');
+            return $this->redirect(['trader/view','id'=>$trader->trader_id]);
+        }
+        return $this->render('seller', [
+            'model' => $trader,
+            'bayer' => $seller,
+        ]);
+    }
+
+    public function actionBuyer(int $id)
+    {
+        $trader = TraderQuery::model()->filterByTraderId($id)->one();
+        if (!$trader) {
+            throw new NotFoundHttpException('Трейдер не найден');
+        }
+        $fabric = new \backend\components\buyer\Fabric;
+        $bayer = $fabric->create($trader->buyer_id, $trader->currency_id, $trader->getBuyerOptions());
+
+        $request = \Yii::$app->request;
+        if ($request->isPost && $bayer->load($request->post()) && $bayer->validate()) {
+            $trader->buyer_options = json_encode($bayer->getAttributes());
+            $trader->save(false);
+            $this->successFlash('Покупатель успешно сохранен');
+            return $this->redirect(['trader/view','id'=>$trader->trader_id]);
+        }
+
+        return $this->render('buyer', [
+            'model' => $trader,
+            'bayer' => $bayer,
+        ]);
+    }
+    public function actionUpdate(int $id)
+    {
+
     }
 
 }

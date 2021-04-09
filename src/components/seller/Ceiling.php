@@ -7,14 +7,14 @@ use backend\components\repository\Course;
 class Ceiling extends Base {
     const TYPE = 'ceiling';
 
-    protected $diff_percent;
-    protected $max_loss_percent;
+    public $diff_percent;
+    public $max_loss_percent;
 
     public function getAvailableConfigs():array
     {
         return [
-            'diff_percent' => ['type'=>'decimal','digits'=>2],
-            'max_loss_percent' => ['type'=>'decimal','digits'=>2],
+            'diff_percent' => ['type'=>'number','step'=>0.01],
+            'max_loss_percent' => ['type'=>'number','step'=>0.01],
         ];
     }
 

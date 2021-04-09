@@ -7,12 +7,12 @@ use backend\components\repository\Course;
 class Simple extends Base {
     const TYPE = 'simple';
 
-    protected $price;
+    public $price;
 
     public function getAvailableConfigs():array
     {
         return [
-            'price'    => ['type'=>'money']
+            'price'    => ['type'=>'number','step'=>0.01]
         ];
     }
 

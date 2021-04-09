@@ -11,6 +11,8 @@ class Fabric {
         $buyer = $this->_getBuyer($buyerId);
         $currency = $this->_getCurrency($currencyId);
         switch ($buyer->type) {
+            case None::TYPE:
+                return new None($currency, $options);
             case Simple::TYPE:
                 return new Simple($currency, $options);
             case Avg::TYPE:

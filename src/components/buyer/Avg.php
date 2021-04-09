@@ -9,14 +9,14 @@ class Avg extends Base {
 
     const TYPE = 'avg';
 
-    protected $duration;
-    protected $diff_percent;
+    public $duration;
+    public $diff_percent;
 
     public function getAvailableConfigs():array
     {
         return [
-            'duration' => ['type'=>'integer'],
-            'diff_percent' => ['type'=>'decimal','digits'=>2]
+            'duration' => ['type'=>'number'],
+            'diff_percent' => ['type'=>'number','step'=>0.01]
         ];
     }
 
