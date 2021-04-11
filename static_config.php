@@ -12,6 +12,7 @@ return [
     'vendorPath' => __DIR__ . '/vendor',
     'basePath' => __DIR__ . '/src',
     'timeZone' => 'Europe/Moscow',
+    'language' => 'ru-RU',
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['debug'],
     'aliases' => [

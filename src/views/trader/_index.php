@@ -2,10 +2,16 @@
 
 use app\widgets\InspiniaGrid;
 use backend\models\Trader;
+use yii\bootstrap\Html;
+
 /**
  * @var $traders \backend\models\Trader[]
  */
 ?>
+<div class="text-right">
+    <?=Html::a('Создать инструмент',['trader/create'],['class'=>'btn btn-primary']);?>
+</div>
+<br>
 <div class="project-list">
     <?= InspiniaGrid::widget([
           'dataProvider' => new \yii\data\ArrayDataProvider(['allModels'=>$traders,'key'=>'trader_id']),

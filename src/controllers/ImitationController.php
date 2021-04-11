@@ -80,9 +80,10 @@ class ImitationController extends Controller
             ->all();
     }
 
-    public function actionCreate()
+    public function actionCreate($trader_id=null)
     {
         $model = new ImitationForm;
+        $model->trader_id = $trader_id ? (int)$trader_id : null;
         $request = \Yii::$app->request;
         if ($request->isPost && $model->load($request->post()) && $model->validate() && $model->create()) {
             $this->successFlash('Имитация успешно создана');

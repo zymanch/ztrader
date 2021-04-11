@@ -1,10 +1,11 @@
 <?php
 /**
  * @var $model \backend\models\Trader
- * @var $bayer \backend\components\buyer\Base
+ * @var $seller \backend\components\seller\Base
  */
 use app\extensions\yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\widgets\Breadcrumbs;
 
 ?>
 
@@ -20,7 +21,14 @@ use yii\bootstrap\ActiveForm;
             <div class="tab-content">
                 <div class="tab-pane active">
                     <div class="panel-body">
-                        <?=$this->render('_seller',['model'=>$model,'bayer'=>$bayer,'form'=>$form]);?>
+                        <?php echo Breadcrumbs::widget([
+                            'links' => [
+                                ['label' => 'Список инструментов','url' => ['trader/index']],
+                                ['label' => 'Инструмент '.$model->name,'url' => ['trader/view','id'=>$model->trader_id]],
+                                'Продавец',
+                            ],
+                        ]);?>
+                        <?=$this->render('_seller',['model'=>$model,'seller'=>$seller,'form'=>$form]);?>
                     </div>
                 </div>
 

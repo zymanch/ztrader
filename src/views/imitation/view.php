@@ -3,6 +3,8 @@
  * @var $model \backend\models\TraderImitation
  */
 use app\extensions\yii\helpers\Html;
+use yii\widgets\Breadcrumbs;
+
 ?>
 <div class="row">
     <div class="col-xs-12">
@@ -15,6 +17,12 @@ use app\extensions\yii\helpers\Html;
             <div class="tab-content">
                 <div class="tab-pane active">
                     <div class="panel-body">
+                        <?php echo Breadcrumbs::widget([
+                            'links' => [
+                                ['label' => 'Список имитации','url' => ['imitation/index']],
+                                'Имитация №'.$model->trader_imitation_id,
+                            ],
+                        ]);?>
                         <?=$this->render('_view',['model'=>$model]);?>
                     </div>
                 </div>

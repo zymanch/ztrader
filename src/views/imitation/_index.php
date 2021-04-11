@@ -83,7 +83,7 @@ use yii\data\ArrayDataProvider;
                       if ($imitation->status != TraderImitation::STATUS_PROCESSING) {
                           $progress = '';
                       } else{
-                          $progress = number_format($imitation->progress,2).'%';
+                          $progress = number_format($imitation->progress).'%';
                       }
                       return '<span id="imitation-progress-'.$imitation->trader_imitation_id.'">'.$progress.'</span>';
                   },

@@ -1,14 +1,12 @@
 <?php
 /**
  * @var $model \backend\models\Trader
- * @var $bayer \backend\components\buyer\Base
  */
 use app\extensions\yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\widgets\Breadcrumbs;
 
 ?>
-
 <?php $form = ActiveForm::begin(['method'=>'post','layout'=>'horizontal']); ?>
 <div class="row">
     <div class="col-xs-12">
@@ -24,11 +22,10 @@ use yii\widgets\Breadcrumbs;
                         <?php echo Breadcrumbs::widget([
                             'links' => [
                                 ['label' => 'Список инструментов','url' => ['trader/index']],
-                                ['label' => 'Инструмент '.$model->name,'url' => ['trader/view','id'=>$model->trader_id]],
-                                'Покупатель',
+                                'Настройки '.$model->name,
                             ],
                         ]);?>
-                        <?=$this->render('_buyer',['model'=>$model,'bayer'=>$bayer,'form'=>$form]);?>
+                        <?=$this->render('_update',['model'=>$model,'form'=>$form]);?>
                     </div>
                 </div>
 

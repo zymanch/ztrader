@@ -3,6 +3,8 @@
  * @var $traders \backend\models\Trader[]
  */
 use app\extensions\yii\helpers\Html;
+use yii\widgets\Breadcrumbs;
+
 ?>
 <div class="row">
     <div class="col-xs-12">
@@ -15,6 +17,11 @@ use app\extensions\yii\helpers\Html;
             <div class="tab-content">
                 <div class="tab-pane active">
                     <div class="panel-body">
+                        <?php echo Breadcrumbs::widget([
+                            'links' => [
+                                'Список инструментов',
+                            ],
+                        ]);?>
                         <?=$this->render('_index',['traders'=>$traders]);?>
                     </div>
                 </div>
