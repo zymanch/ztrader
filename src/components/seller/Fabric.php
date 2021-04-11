@@ -15,8 +15,10 @@ class Fabric {
                 return new None($currency, $options);
             case Simple::TYPE:
                 return new Simple($currency, $options);
-            case Ceiling::TYPE:
-                return new Ceiling($currency, $options);
+            case Barrier::TYPE:
+                return new Barrier($currency, $options);
+            case Grow::TYPE:
+                return new Grow($currency, $options);
             default:
                 throw new \InvalidArgumentException('Unknown seller type: '.$seller->type);
         }

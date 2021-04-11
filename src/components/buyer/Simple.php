@@ -16,6 +16,13 @@ class Simple extends Base {
         ];
     }
 
+    public function attributeLabels()
+    {
+        return [
+            'price'    => 'Цена, $'
+        ];
+    }
+
     public function isBuyTime(\DateTimeImmutable $now):bool
     {
         $course = new Course;

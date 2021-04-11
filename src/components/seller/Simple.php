@@ -16,6 +16,13 @@ class Simple extends Base {
         ];
     }
 
+    public function attributeLabels()
+    {
+        return [
+            'price'    => 'Цена, $'
+        ];
+    }
+
     public function isSellTime(\DateTimeImmutable $buyTime, \DateTimeImmutable $now):bool {
         $course = new Course;
         return $course->get($this->_currency->code, $now) >= $this->price;

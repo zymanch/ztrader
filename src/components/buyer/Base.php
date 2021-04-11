@@ -15,7 +15,7 @@ abstract class Base extends Model {
     public function __construct(Currency $currency, array $options)
     {
         $this->_currency = $currency;
-        parent::__construct($options);
+        parent::__construct(array_intersect_key($options, $this->getAvailableConfigs()));
     }
 
     public function rules()

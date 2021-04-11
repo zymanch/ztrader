@@ -56,28 +56,13 @@ class Course {
 
     public function find($currencyCode, \DateTimeInterface $from, \DateTimeInterface $to)
     {
-        $fromYear = $from->format('Y');
-        $toYear = $to->format('Y');
-        $fromMonth = (int)$from->format('m');
-        $toMonth = (int)$to->format('m');
         $result = [];
-        $fromTime = $from->format('d H:i:s');
-        $toTime = $to->format('d H:i:s');
-
-
-        for ($year=$fromYear;$year<=$toYear;$year++) {
-            for ($month = ($year==$fromYear?$fromMonth:1); $month<=($year==$toYear?$toMonth:12);$month++) {
-                $fromDay = $year==$fromYear && $month==$fromMonth ? $fromTime : '01 00:00:00';
-                $toDay = $year==$toYear && $month==$toMonth ? $toTime : date('t',strtotime($year.'-'.$month.'-01')).' 23:59:59';
-                $tableName = $this->_getTableName($currencyCode, $year, $month);
-                $fromDate = sprintf('%04d-%02d-%s', $year, $month, $fromDay);
-                $toDate = sprintf('%04d-%02d-%s', $year, $month,$toDay);
-                $result[] = (new Query)
-                    ->from($tableName)
-                    ->where('date between "'.$fromDate.'" and "'.$toDate.'"')
-                    ->orderBy('date ASC')
-                    ->all();
-            }
+        foreach ($this->_getTableConfigs($currencyCode, $from, $to) as $config) {
+            $result[] = (new Query)
+                ->from($config['table'])
+                ->where('date between "'.$config['from'].'" and "'.$config['to'].'"')
+                ->orderBy('date ASC')
+                ->all();
         }
 
         if (!$result) {
@@ -87,6 +72,66 @@ class Course {
             return reset($result);
         }
         return array_merge(...$result);
+    }
+
+    public function statistic($currencyCode, \DateTimeInterface $from, \DateTimeInterface $to)
+    {
+        $result = [];
+        $min = null;
+        $max = null;
+        $sum = 0;
+        $count = 0;
+        foreach ($this->_getTableConfigs($currencyCode, $from, $to) as $config) {
+            $stats = (new Query)
+                ->select(['count(*) as c','sum(course) as s','min(course) as mn','max(course) as mx'])
+                ->from($config['table'])
+                ->where('date between "'.$config['from'].'" and "'.$config['to'].'"')
+                ->all();
+            if (!$stats) {
+                continue;
+            }
+            if ($min === null || $min > $stats['mn']) {
+                $min = (float)$stats['mn'];
+            }
+            if ($max === null || $max < $stats['mx']) {
+                $min = (float)$stats['mx'];
+            }
+            $count+=$stats['c'];
+            $sum+=$stats['s'];
+        }
+        $avg = $count ? $sum / $count : null;
+        return [
+            'avg' => $avg,
+            'min' => $min,
+            'max' => $max,
+            'dispersion' => $min ? ($max-$min)/$min : null,
+            'deviation' => $avg ? max(abs($max-$avg),abs($avg-$min))/$avg : null
+        ];
+    }
+
+    private function _getTableConfigs($currencyCode, \DateTimeInterface $from, \DateTimeInterface $to)
+    {
+        $fromYear = $from->format('Y');
+        $toYear = $to->format('Y');
+        $fromMonth = (int)$from->format('m');
+        $toMonth = (int)$to->format('m');
+
+        $fromTime = $from->format('d H:i:s');
+        $toTime = $to->format('d H:i:s');
+
+
+        $result = [];
+        for ($year=$fromYear;$year<=$toYear;$year++) {
+            for ($month = ($year==$fromYear?$fromMonth:1); $month<=($year==$toYear?$toMonth:12);$month++) {
+                $fromDay = $year==$fromYear && $month==$fromMonth ? $fromTime : '01 00:00:00';
+                $toDay = $year==$toYear && $month==$toMonth ? $toTime : date('t',strtotime($year.'-'.$month.'-01')).' 23:59:59';
+                $tableName = $this->_getTableName($currencyCode, $year, $month);
+                $fromDate = sprintf('%04d-%02d-%s', $year, $month, $fromDay);
+                $toDate = sprintf('%04d-%02d-%s', $year, $month,$toDay);
+                $result[] = ['table'=>$tableName,'from'=>$fromDate,'to'=>$toDate];
+            }
+        }
+        return $result;
     }
 
     public function save($currencyCode, \DateTimeInterface $date, $course)

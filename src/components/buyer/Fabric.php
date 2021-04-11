@@ -19,6 +19,8 @@ class Fabric {
                 return new Avg($currency, $options);
             case Fall::TYPE:
                 return new Fall($currency, $options);
+            case Zone::TYPE:
+                return new Zone($currency, $options);
             default:
                 throw new \InvalidArgumentException('Unknown buyer type: '.$buyer->type);
         }

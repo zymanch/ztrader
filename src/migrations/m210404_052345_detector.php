@@ -76,7 +76,8 @@ class m210404_052345_detector extends Migration
             ENGINE=InnoDB");
             $this->execute("INSERT INTO `ztrader`.`seller` (`type`, `name`) VALUES ('none', 'Отсутсвует')");
             $this->execute("INSERT INTO `ztrader`.`seller` (`type`, `name`) VALUES ('simple', 'Границы')");
-            $this->execute("INSERT INTO `ztrader`.`seller` (`type`, `name`) VALUES ('ceiling', 'Потолок')");
+            $this->execute("INSERT INTO `ztrader`.`seller` (`type`, `name`) VALUES ('barrier', 'Потолок')");
+            $this->execute("INSERT INTO `ztrader`.`seller` (`type`, `name`) VALUES ('grow', 'Рост')");
 
         }
         if ($this->db->getTableSchema('buyer', true) === null) {

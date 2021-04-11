@@ -4,8 +4,8 @@ namespace backend\components\seller;
 
 use backend\components\repository\Course;
 
-class Ceiling extends Base {
-    const TYPE = 'ceiling';
+class Barrier extends Base {
+    const TYPE = 'barrier';
 
     public $diff_percent;
     public $max_loss_percent;
@@ -16,6 +16,15 @@ class Ceiling extends Base {
             'diff_percent' => ['type'=>'number','step'=>0.01],
             'max_loss_percent' => ['type'=>'number','step'=>0.01],
         ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'diff_percent' => 'Продавать при росте, %',
+            'max_loss_percent' => 'Максимальный слив, %',
+        ];
+
     }
 
     public function isSellTime(\DateTimeImmutable $buyTime, \DateTimeImmutable $now):bool
