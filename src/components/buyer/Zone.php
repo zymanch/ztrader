@@ -57,11 +57,11 @@ class Zone extends Base {
             return false;
         }
 
-        $dispersionPercent = $stats['dispersion'];
+        $dispersionPercent = 100*$stats['dispersion'];
         if ($this->min_dispersion_percent > $dispersionPercent || $dispersionPercent > $this->max_dispersion_percent) {
             return false;
         }
-        $deviationPercent = $stats['deviation'];
+        $deviationPercent = 100*$stats['deviation'];
         if ($this->min_deviation_percent > $deviationPercent || $deviationPercent > $this->max_deviation_percent) {
             return false;
         }

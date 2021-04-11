@@ -76,7 +76,6 @@ class Course {
 
     public function statistic($currencyCode, \DateTimeInterface $from, \DateTimeInterface $to)
     {
-        $result = [];
         $min = null;
         $max = null;
         $sum = 0;
@@ -86,7 +85,7 @@ class Course {
                 ->select(['count(*) as c','sum(course) as s','min(course) as mn','max(course) as mx'])
                 ->from($config['table'])
                 ->where('date between "'.$config['from'].'" and "'.$config['to'].'"')
-                ->all();
+                ->one();
             if (!$stats) {
                 continue;
             }
@@ -94,7 +93,7 @@ class Course {
                 $min = (float)$stats['mn'];
             }
             if ($max === null || $max < $stats['mx']) {
-                $min = (float)$stats['mx'];
+                $max = (float)$stats['mx'];
             }
             $count+=$stats['c'];
             $sum+=$stats['s'];
