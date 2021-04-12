@@ -31,10 +31,12 @@ abstract class Base  extends Model{
                         $result[] = [$name, 'safe'];
                     }
                     break;
+                case 'select':
+                    $result[] = [$name, 'in', 'range'=>array_keys($config['values'])];
+                    break;
                 default:
                     $result[] = [$name,'safe'];
             }
-            $result[] = [$name,$config['type']];
         }
         return $result;
     }

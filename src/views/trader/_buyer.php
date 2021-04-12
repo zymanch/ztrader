@@ -28,6 +28,9 @@ use yii\bootstrap\ActiveForm;
         case 'number':?>
             <?php echo $form->field($bayer, $key)->input('number',['min'=>$config['min']??0,'max'=>$config['max']??null,'step'=>$config['step']??1]);?>
             <?php break;
+        case 'select':?>
+            <?php echo $form->field($bayer, $key)->dropDownList($config['values']);?>
+            <?php break;
         default:?>
             <?php echo $form->field($bayer, $key)->textInput($config);?>
             <?php endswitch;?>

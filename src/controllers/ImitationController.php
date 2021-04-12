@@ -41,7 +41,7 @@ class ImitationController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index','create', 'view','status'],
+                        'actions' => ['index','create', 'view','status','history'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -104,6 +104,23 @@ class ImitationController extends Controller
         }
         return $this->render('view', [
             'model'=>$model
+        ]);
+    }
+
+    public function actionHistory(int $id, int $history_id) {
+        $model = TraderImitationQuery::model()
+             ->filterByTraderImitationId($id)
+             ->one();
+        if (!$model) {
+            throw new NotFoundHttpException();
+        }
+        $history = $model->getTraderHistories()->filterByTraderHistoryId($history_id)->one();
+        if (!$history) {
+            throw new NotFoundHttpException();
+        }
+        return $this->render('history', [
+            'model'=>$model,
+            'history' => $history
         ]);
     }
 }

@@ -93,6 +93,7 @@ class m210404_052345_detector extends Migration
             $this->execute("INSERT INTO `ztrader`.`buyer` (`type`, `name`) VALUES ('simple', 'Границы')");
             $this->execute("INSERT INTO `ztrader`.`buyer` (`type`, `name`) VALUES ('avg', 'Усредненное')");
             $this->execute("INSERT INTO `ztrader`.`buyer` (`type`, `name`) VALUES ('fall', 'Падение')");
+            $this->execute("INSERT INTO `ztrader`.`buyer` (`type`, `name`) VALUES ('zone', 'Зона')");
         }
         if ($this->db->getTableSchema('trader', true) === null) {
             $this->execute("CREATE TABLE `trader` (

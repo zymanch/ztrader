@@ -133,6 +133,23 @@ $lastSellDate=null;
                   },
                   'headerOptions'=>['style'=>'width:100px'],
                   'contentOptions'=>['style'=>'width:100px'],
+              ],
+              [
+                  'class' => \app\extensions\yii\grid\ActionColumn::class,
+                  'template' => '<div class="btn-group">{view}</div>',
+                  'buttons' => [
+                        'view' => function ($url, TraderHistory $model, $key){
+                            $title = 'History';
+                            $options = [
+                                'title'      => $title,
+                                'aria-label' => $title,
+                                'data-pjax'  => '0',
+                            ];
+                            $url = \yii\helpers\Url::to(['imitation/history','id'=>$model->trader_imitation_id,'history_id'=>$model->trader_history_id]);
+                            $icon = Html::tag('span', '', ['class' => "glyphicon glyphicon-eye-open"]);
+                            return Html::a($icon, $url, $options);
+                        }
+                    ]
               ]
           ],
     ]);?>

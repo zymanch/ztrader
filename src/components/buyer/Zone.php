@@ -9,11 +9,15 @@ class Zone extends Base {
 
     const TYPE = 'zone';
 
+    const BUY_TRIGGER_BIGGER_PRICE = 'bigger';
+    const BUY_TRIGGER_LESS_PRICE = 'less';
+
     public $range_duration;
     public $min_dispersion_percent;
     public $max_dispersion_percent;
     public $min_deviation_percent;
     public $max_deviation_percent;
+    public $buy_trigger;
     public $diff_percent;
 
     public function getAvailableConfigs():array
@@ -27,7 +31,8 @@ class Zone extends Base {
             'min_deviation_percent' => ['type'=>'number','step'=>0.01],
             'max_deviation_percent' => ['type'=>'number','step'=>0.01],
 
-            'diff_percent' => ['type'=>'number','step'=>0.01],
+            'buy_trigger'           => ['type'=>'select','values'=>[self::BUY_TRIGGER_BIGGER_PRICE=>'Покупать при цене ниже',self::BUY_TRIGGER_LESS_PRICE=>'Покупать при цене выше']],
+            'diff_percent'          => ['type'=>'number','step'=>0.01,'min'=>-100,'max'=>100],
         ];
     }
 
@@ -42,6 +47,7 @@ class Zone extends Base {
             'min_deviation_percent' => 'Минимальное расхождение, %',
             'max_deviation_percent' => 'МАксмальное расхождение, %',
 
+            'buy_trigger' => 'Когда покупать',
             'diff_percent' => 'Порог покупки, %',
         ];
     }
@@ -65,13 +71,20 @@ class Zone extends Base {
         if ($this->min_deviation_percent > $deviationPercent || $deviationPercent > $this->max_deviation_percent) {
             return false;
         }
-        $barrier = $stats['avg'] * (1-$this->diff_percent/100);
+        $barrier = $stats['avg'] * (1+$this->diff_percent/100);
 
-        if ($course->get($this->_currency->code, $now) > $barrier) {
-            return false;
+        if ($this->buy_trigger == self::BUY_TRIGGER_LESS_PRICE) {
+            if ($course->get($this->_currency->code, $now) <= $barrier) {
+                return true;
+            }
+        } else {
+            if ($course->get($this->_currency->code, $now) > $barrier) {
+                return true;
+            }
         }
 
-        return true;
+
+        return false;
     }
 
 
