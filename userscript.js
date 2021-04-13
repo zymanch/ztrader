@@ -19,26 +19,35 @@ var maxDate = null;
 
 
 $block.append($button);
+
+function formatDate(date) {
+    return (date.getDate()<10?'0':'')+date.getDate()+'.'+(date.getMonth()<9?'0':'')+(date.getMonth()+1)+'.'+date.getFullYear();
+}
+
+function fileName(from,to) {
+    return blank+'_'+from.getYear()+(from.getMonth()<9?'0':'')+(from.getMonth()+1)+(from.getDate()<10?'0':'')+from.getDate()+
+        '_'+to.getFullYear()+(to.getMonth()<9?'0':'')+(to.getMonth()+1)+(to.getDate()<10?'0':'')+to.getDate();
+}
+
 var tick = function () {
-    $from.val((from.getDate()<10?'0':'')+from.getDate()+'.'+(from.getMonth()<9?'0':'')+(from.getMonth()+1)+'.'+from.getFullYear());
+    $from.val(formatDate(from));
     $fromD.val(from.getDate());
     $fromM.val(from.getMonth());
     $fromY.val(from.getFullYear());
 
-    var to =  new Date(from.getTime()+3600*24*1000);
-    $to.val((to.getDate()<10?'0':'')+to.getDate()+'.'+(to.getMonth()<9?'0':'')+(to.getMonth()+1)+'.'+to.getFullYear());
+    var to =  new Date(from.getTime());
+    $to.val(formatDate(to));
     $toD.val(to.getDate());
     $toM.val(to.getMonth());
     $toY.val(to.getFullYear());
     console.log(from+' to '+to);
 
-    $fileName.val(blank+'_'+from.getYear()+(from.getMonth()<9?'0':'')+(from.getMonth()+1)+(from.getDate()<10?'0':'')+from.getDate()+
-        '_'+to.getFullYear()+(to.getMonth()<9?'0':'')+(to.getMonth()+1)+(to.getDate()<10?'0':'')+to.getDate());
+    $fileName.val(fileName(from, to));
 
     $form.submit();
     if (from.getTime()<maxDate.getTime()){
         from.setTime(from.getTime()+3600*24*1000);
-        setTimeout(tick, 10000);
+        setTimeout(tick, 60000);
     }
 }
 $button.click(function(e) {
