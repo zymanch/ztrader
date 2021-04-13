@@ -173,11 +173,12 @@ var config = {
             time: {
                 format: 'HH:MM:SS',
                 tooltipFormat: 'll HH:mm',
-                unit: 'hour',
-                unitStepSize: 1,
+                unit: 'minute',
+                unitStepSize: 10,
                 displayFormats: {
-                    'day': 'MM/DD/YYYY',
-                    'hour': 'HH:mm'
+                    day: 'MM/DD/YYYY',
+                    hour: 'HH:mm',
+                    minute: 'hh:mm'
                 }
             }
         }]
@@ -205,6 +206,12 @@ var myChart = new Chart(ctx, config);
                 <th style="width: 200px">Покупка</th>
                 <th style="width: 200px">Продажа</th>
                 <th style="width: 200px">После</th>
+            </tr>
+            <tr>
+                <td>Длительность</td>
+                <td><?=gmdate('H:i:s',$from->getTimestamp()-$left->getTimestamp());?></td>
+                <td><?=gmdate('H:i:s',$to->getTimestamp()-$from->getTimestamp());?></td>
+                <td><?=gmdate('H:i:s',$right->getTimestamp()-$to->getTimestamp());?></td>
             </tr>
             <tr>
                 <td>Курс</td>

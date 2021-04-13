@@ -22,6 +22,7 @@ class CurrencyController extends Controller {
 
     // Dump placed here:
     // https://www.finam.ru/profile/cryptocurrencies/btc-usd/export/
+    // https://www.finam.ru/profile/cryptocurrencies/eth-usd/export/
     public function actionImport() {
         if (!file_exists($this->filename)) {
             throw new \Exception('Файл дампа не найден');
