@@ -25,8 +25,8 @@ function formatDate(date) {
 }
 
 function fileName(from,to) {
-    return blank+'_'+from.getYear()+(from.getMonth()<9?'0':'')+(from.getMonth()+1)+(from.getDate()<10?'0':'')+from.getDate()+
-        '_'+to.getFullYear()+(to.getMonth()<9?'0':'')+(to.getMonth()+1)+(to.getDate()<10?'0':'')+to.getDate();
+    return blank+'_'+(from.getDate()<10?'0':'')+from.getDate()+(from.getMonth()<9?'0':'')+(from.getMonth()+1)+from.getFullYear()%2000+
+        '_'+(to.getDate()<10?'0':'')+to.getDate()+(to.getMonth()<9?'0':'')+(to.getMonth()+1)+to.getFullYear()%2000;
 }
 
 var tick = function () {
@@ -47,7 +47,7 @@ var tick = function () {
     $form.submit();
     if (from.getTime()<maxDate.getTime()){
         from.setTime(from.getTime()+3600*24*1000);
-        setTimeout(tick, 60000);
+        setTimeout(tick, 90000);
     }
 }
 $button.click(function(e) {

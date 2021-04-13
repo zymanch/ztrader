@@ -71,6 +71,16 @@ class Zone extends Base {
         if ($this->min_deviation_percent > $deviationPercent || $deviationPercent > $this->max_deviation_percent) {
             return false;
         }
+
+        $interval = new \DateInterval('PT4M');
+        $interval->invert = true;
+        $from2 = $now->add($interval);
+        $lastStat = $course->statistic($this->_currency->code, $from2, $now);
+
+        if ($lastStat['max']*0.999 > $course->get($this->_currency->code, $now)) {
+            return false;
+        }
+
         $barrier = $stats['avg'] * (1+$this->diff_percent/100);
 
         if ($this->buy_trigger == self::BUY_TRIGGER_LESS_PRICE) {

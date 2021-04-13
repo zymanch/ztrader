@@ -7,13 +7,13 @@ use yii\console\Controller;
 class CurrencyController extends Controller {
 
     public $filename;
+    public $currency;
 
     public function options($actionID)
     {
         switch ($actionID) {
             case 'import':
-            case 'import-multi':
-                return ['filename'];
+                return ['filename','currency'];
             default:
                 return [];
         }
@@ -22,10 +22,26 @@ class CurrencyController extends Controller {
 
     // Dump placed here:
     // https://www.finam.ru/profile/cryptocurrencies/btc-usd/export/
-    public function actionImport()
+    public function actionImport() {
+        if (!file_exists($this->filename)) {
+            throw new \Exception('Файл дампа не найден');
+        }
+        if (!is_dir($this->filename)) {
+            $this->_importFile($this->filename);
+            return;
+        }
+        $files = scandir($this->filename);
+        foreach ($files as $file) {
+            if ($file[0]!='.') {
+                $this->_importFile(rtrim($this->filename,'/').'/'.$file);
+            }
+        }
+    }
+
+    private function _importFile($fileName)
     {
         $repository = new Course();
-        $cources = file($this->filename);
+        $cources = file($fileName);
         $columns = array_flip(explode(',',trim(array_shift($cources))));
         $dateIndex = $columns['<DATE>'];
         $timeIndex = $columns['<TIME>'];
@@ -41,12 +57,8 @@ class CurrencyController extends Controller {
                     'volume' => $row[$volIndex]
                 ];
             }
-            $repository->saveMulti('btc',$rows);
+            $repository->saveMulti(strtolower($this->currency),$rows);
         }
     }
 
-    public function actionSync()
-    {
-
-    }
 }
