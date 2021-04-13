@@ -31,7 +31,7 @@ class Zone extends Base {
             'min_deviation_percent' => ['type'=>'number','step'=>0.01],
             'max_deviation_percent' => ['type'=>'number','step'=>0.01],
 
-            'buy_trigger'           => ['type'=>'select','values'=>[self::BUY_TRIGGER_BIGGER_PRICE=>'Покупать при цене ниже',self::BUY_TRIGGER_LESS_PRICE=>'Покупать при цене выше']],
+            'buy_trigger'           => ['type'=>'select','values'=>[self::BUY_TRIGGER_BIGGER_PRICE=>'Покупать при цене выше',self::BUY_TRIGGER_LESS_PRICE=>'Покупать при цене ниже']],
             'diff_percent'          => ['type'=>'number','step'=>0.01,'min'=>-100,'max'=>100],
         ];
     }

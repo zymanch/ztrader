@@ -23,7 +23,8 @@ use yii\widgets\Breadcrumbs;
                         <?php echo Breadcrumbs::widget([
                             'links' => [
                                 ['label' => 'Список имитации','url' => ['imitation/index']],
-                                'Имитация №'.$model->trader_imitation_id,
+                                ['label'=>'Имитация №'.$model->trader_imitation_id,'url'=>['imitation/view','id'=>$model->trader_imitation_id]],
+                                'Купля/Продажа №'.$history->trader_history_id,
                             ],
                         ]);?>
                         <?=$this->render('_history',['model'=>$model,'history'=>$history]);?>
