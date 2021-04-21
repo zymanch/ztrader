@@ -74,6 +74,51 @@ class Course {
         return array_merge(...$result);
     }
 
+    public function group($currencyCode, \DateTimeInterface $from, \DateTimeInterface $to, $intervalSec)
+    {
+        $rows = [];
+        \Yii::$app->db->createCommand('SET SESSION group_concat_max_len = 1000000');
+        foreach ($this->_getTableConfigs($currencyCode, $from, $to) as $config) {
+            $lines = (new Query)
+                ->select([
+                    'floor(unix_timestamp(date)/'.$intervalSec.')*'.$intervalSec.' as t',
+                    'min(course) as min',
+                    'max(course) as max',
+                    'group_concat(course order by date) as courses'
+                ])
+                ->from($config['table'])
+                ->where('date between "'.$config['from'].'" and "'.$config['to'].'"')
+                ->orderBy('date ASC')
+                ->groupBy('t')
+                ->all();
+            foreach ($lines as $line) {
+                $courses = explode(',', $line['courses']);
+                $rows[$line['t']] = [
+                    'x'=>$line['t']*1000,
+                    'o' =>(float)reset($courses),
+                    'c'=>(float)end($courses),
+                    'h'=>(float)$line['max'],
+                    'l'=>(float)$line['min'],
+                ];
+            }
+        }
+        $result = [];
+        $period = new \DatePeriod($from, new \DateInterval('PT'.$intervalSec.'S'), $to);
+        $last = reset($rows);
+        if (!$last) {
+            $last = ['x'=>$from->getTimestamp()*1000,'o'=>0,'c'=>0,'h'=>0,'l'=>0];
+        }
+        foreach ($period as $date) {
+            if (isset($rows[$date->getTimestamp()])) {
+                $result[] = $rows[$date->getTimestamp()];
+                $last = $rows[$date->getTimestamp()];
+            } else {
+                $result[] = $last;
+            }
+        }
+        return $result;
+    }
+
     public function statistic($currencyCode, \DateTimeInterface $from, \DateTimeInterface $to)
     {
         $min = null;
