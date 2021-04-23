@@ -9,22 +9,23 @@ class PercentBar extends Base {
     public $percent;
     public $currency;
     public $borderColor = 'rgba(255, 241, 189, 1.0)';
-    public $backgroundColor = 'rgba(255, 241, 189, 0.0)';
+    public $backgroundColor = 'rgba(255, 241, 189, 1.0)';
 
     public function getDatasets()
     {
+
         return [
             [
                 'label' => 'Среднее +'.$this->percent.'%',
-                'data'  => $this->_getDataMin(),
+                'data'  => $this->_getDataMax(),
                 'borderColor' => $this->borderColor,
-                'backgroundColor' => $this->backgroundColor,
+                'backgroundColor' => 'rgba(255, 241, 189, 0.0)',
                 'pointRadius'	=> 0,
                 'borderWidth'	=> 1
             ],
             [
                 'label'=>'Среднее -'.$this->percent.'%',
-                'data' => $this->_getDataMax(),
+                'data' => $this->_getDataMin(),
                 'borderColor' => $this->borderColor,
                 'backgroundColor' => $this->backgroundColor,
                 'pointRadius'	=> 0,

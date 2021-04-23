@@ -119,18 +119,16 @@ class CourseGraph extends Widget
     {
         $diff = $this->to->getTimestamp() - $this->from->getTimestamp();
         switch(true) {
-            case $diff < 120:
+            case $diff < 1200:
                 return 1;
-            case $diff < 1000:
-                return 10;
             case $diff < 3*3600:
-                return 2*60;
+                return 10;
             case $diff < 24*3600:
+                return 2*60;
+            case $diff < 31*3600:
                 return 60*10;
-            case $diff<31*3600:
-                return 60*60;
             default:
-                return 24*3600;
+                return 60*60;
         }
     }
 
