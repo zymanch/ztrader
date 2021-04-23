@@ -16,7 +16,7 @@ class PercentBar extends Base {
         return [
             [
                 'label' => 'Среднее +'.$this->percent.'%',
-                'data'  => $this->_getDataMax(),
+                'data'  => $this->_getDataMin(),
                 'borderColor' => $this->borderColor,
                 'backgroundColor' => $this->backgroundColor,
                 'pointRadius'	=> 0,

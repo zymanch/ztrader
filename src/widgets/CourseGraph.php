@@ -16,6 +16,7 @@ use yii\web\View;
 
 class CourseGraph extends Widget
 {
+    public $type = 'line';
     /** @var \DateTime */
     public $from;
     /** @var \DateTime */
@@ -26,11 +27,16 @@ class CourseGraph extends Widget
 
     public function init()
     {
-        $this->view->registerJsFile('/js/moment.js');
-        $this->view->registerJsFile('/js/plugins/chartJs/luxon.js');
-        $this->view->registerJsFile('/js/plugins/chartJs/Chart.min.js');
-        $this->view->registerJsFile('/js/plugins/chartJs/Chart.adapter.js');
-        $this->view->registerJsFile('/js/plugins/chartJs/chart.financial.js');
+        if ($this->type == 'line') {
+            $this->view->registerJsFile('/js/moment.js');
+            $this->view->registerJsFile('/js/plugins/chartJs/Chart.min.js');
+        } else {
+            $this->view->registerJsFile('/js/plugins/chartJs/luxon.js');
+            $this->view->registerJsFile('/js/plugins/chartJs/Chart.3.js');
+            $this->view->registerJsFile('/js/plugins/chartJs/Chart.adapter.js');
+            $this->view->registerJsFile('/js/plugins/chartJs/chart.financial.js');
+        }
+
         if (!is_object($this->from)) {
             $this->from = new \DateTime($this->from);
         }
@@ -61,8 +67,7 @@ class CourseGraph extends Widget
     private function _getGraphConfig()
     {
         $config = [
-            //'type' => 'line',
-            'type' => 'candlestick',
+            'type' => $this->type,
             'data' => [
                 'labels' => [],
                 'datasets' => []
