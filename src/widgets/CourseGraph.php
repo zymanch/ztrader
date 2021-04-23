@@ -12,6 +12,7 @@ use yii\bootstrap\Html;
 use yii\bootstrap\Widget;
 use yii\helpers\Json;
 use yii\web\JsExpression;
+use yii\web\View;
 
 class CourseGraph extends Widget
 {
@@ -46,14 +47,12 @@ class CourseGraph extends Widget
 
     private function _registerJs()
     {
-        $js = '';
 
         $this->view->registerJs('
             var config = '.Json::encode($this->_getGraphConfig(), JSON_PRETTY_PRINT).';
-            '.$js.'
             var ctx = document.getElementById("'.$this->getId().'").getContext("2d");
             var myChart = new Chart(ctx, config);
-        ');
+        ', View::POS_END);
     }
 
     private function _getGraphConfig()

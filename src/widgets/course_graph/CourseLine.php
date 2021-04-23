@@ -14,7 +14,7 @@ class CourseLine extends Base {
         $repo = new Currency;
         $currency = $repo->getByCode($this->currency);
         return [[
-            'label' => 'Курс '.$currency->name,
+            'label' => 'Course '.$currency->name,
             'data' => $this->_getData(),
             'borderColor' => $this->borderColor,
             'backgroundColor'=> $this->backgroundColor
