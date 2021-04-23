@@ -17,7 +17,8 @@ class CourseLine extends Base {
             'label' => 'Course '.$currency->name,
             'data' => $this->_getData(),
             'borderColor' => $this->borderColor,
-            'backgroundColor'=> $this->backgroundColor
+            'backgroundColor'=> $this->backgroundColor,
+            'pointRadius'=> 0
         ]];
     }
 

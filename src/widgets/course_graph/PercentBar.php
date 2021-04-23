@@ -10,6 +10,10 @@ class PercentBar extends Base {
     public $currency;
     public $borderColor = 'rgba(255, 241, 189, 1.0)';
     public $backgroundColor = 'rgba(255, 241, 189, 1.0)';
+    /** @var \DateTimeInterface[]  */
+    public $points = [];
+
+    private $_stats;
 
     public function getDatasets()
     {
@@ -37,15 +41,48 @@ class PercentBar extends Base {
 
     private function _getDataMin()
     {
-        $repo = new Course();
-        $data = $repo->group($this->currency, $this->graph->from, $this->graph->to, $this->graph->getTickInSec());
-        return ArrayHelper::getColumn($data, 'l');
+        $interval = new \DateInterval('PT'.$this->graph->getTickInSec().'S');
+        $period = new \DatePeriod($this->graph->from, $interval, $this->graph->to);
+        $result = [];
+        foreach ($period as $date) {
+            $result[] = round($this->_getStats($date)*(100-$this->percent)/100);
+        }
+        return $result;
     }
 
     private function _getDataMax()
     {
-        $repo = new Course();
-        $data = $repo->group($this->currency, $this->graph->from, $this->graph->to, $this->graph->getTickInSec());
-        return ArrayHelper::getColumn($data, 'h');
+        $interval = new \DateInterval('PT'.$this->graph->getTickInSec().'S');
+        $period = new \DatePeriod($this->graph->from, $interval, $this->graph->to);
+        $result = [];
+        foreach ($period as $date) {
+            $result[] = round($this->_getStats($date)*(100+$this->percent)/100);
+        }
+        return $result;
+    }
+
+    private function _getStats(\DateTimeInterface  $date)
+    {
+        if ($this->_stats === null) {
+            $this->_stats = [];
+            $repo = new Course();
+            $points = array_merge([$this->graph->from], $this->points,[$this->graph->to]);
+            foreach ($points as $index => $point) {
+                if (!isset($points[$index+1])) {
+                    continue;
+                }
+                $this->_stats[] = [
+                    'from' => $point->getTimestamp(),
+                    'to' => $points[$index+1]->getTimestamp(),
+                    'stats' => $repo->statistic($this->currency, $point, $points[$index+1])
+                ];
+            }
+        }
+        foreach ($this->_stats as $point) {
+            if ($point['from'] <=$date->getTimestamp() && $date->getTimestamp() <= $point['to']) {
+                return $point['stats']['avg'];
+            }
+        }
+        return 0;
     }
 }
