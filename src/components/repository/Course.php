@@ -76,6 +76,12 @@ class Course {
 
     public function group($currencyCode, \DateTimeInterface $from, \DateTimeInterface $to, $intervalSec)
     {
+        $fromTimeZone = $from->getTimezone();
+        $toTimeZone = $to->getTimezone();
+        $from = \DateTime::createFromFormat('U',floor($from->getTimestamp()/$intervalSec)*$intervalSec, $from->getTimezone());
+        $from->setTimezone($fromTimeZone);
+        $to = \DateTime::createFromFormat('U',floor($to->getTimestamp()/$intervalSec)*$intervalSec, $to->getTimezone());
+        $to->setTimezone($toTimeZone);
         $rows = [];
         \Yii::$app->db->createCommand('SET SESSION group_concat_max_len = 1000000');
         foreach ($this->_getTableConfigs($currencyCode, $from, $to) as $config) {
@@ -113,6 +119,7 @@ class Course {
                 $result[] = $rows[$date->getTimestamp()];
                 $last = $rows[$date->getTimestamp()];
             } else {
+                $last['x'] = $date->getTimestamp()*1000;
                 $result[] = $last;
             }
         }

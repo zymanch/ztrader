@@ -26,7 +26,6 @@ $interval = new DateInterval('PT'.(isset($buyer->range_duration) ? $buyer->range
 $interval->invert = true;
 $left = $from->add($interval);
 
-
 ?>
 <?php $widget = \app\widgets\CourseGraph::begin([
 
@@ -34,8 +33,8 @@ $left = $from->add($interval);
     'to' => $right,
     'htmlOptions' => ['style'=>'width: 100%;height:400px;'],
 ]);
-//$widget->addData(new \app\widgets\course_graph\Bubble($widget,['currency'=>'BTC','date'=>$from,'label'=>'Покупка']));
-//$widget->addData(new \app\widgets\course_graph\Bubble($widget,['currency'=>'BTC','date'=>$to,'label'=>'Продажа']));
-$widget->addData(new \app\widgets\course_graph\CourseLine($widget,['currency'=>'BTC']));
+$widget->addData(new \app\widgets\course_graph\Bubble($widget,['currency'=>'BTC','date'=>$from,'label'=>'Покупка']));
+$widget->addData(new \app\widgets\course_graph\Bubble($widget,['currency'=>'BTC','date'=>$to,'label'=>'Продажа']));
+$widget->addData(new \app\widgets\course_graph\CourseCandlestick($widget,['currency'=>'BTC']));
 //$widget->addData(new \app\widgets\course_graph\PercentBar($widget,['currency'=>'BTC','percent'=>1]));
 \app\widgets\CourseGraph::end();

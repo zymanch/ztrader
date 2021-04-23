@@ -24,6 +24,7 @@ class CourseLine extends Base {
     private function _getData()
     {
         $repo = new Course();
+
         $data = $repo->group($this->currency, $this->graph->from, $this->graph->to, $this->graph->getTickInSec());
         $result = [];
         foreach ($data as $row) {

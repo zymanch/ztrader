@@ -14,6 +14,7 @@ class CourseCandlestick extends Base {
         $repo = new Currency;
         $currency = $repo->getByCode($this->currency);
         return [[
+
             'label' => 'Курс '.$currency->name,
             'data' => $this->_getData(),
             'borderColor' => $this->borderColor,

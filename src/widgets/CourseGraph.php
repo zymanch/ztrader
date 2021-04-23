@@ -27,7 +27,10 @@ class CourseGraph extends Widget
     public function init()
     {
         $this->view->registerJsFile('/js/moment.js');
+        $this->view->registerJsFile('/js/plugins/chartJs/luxon.js');
         $this->view->registerJsFile('/js/plugins/chartJs/Chart.min.js');
+        $this->view->registerJsFile('/js/plugins/chartJs/Chart.adapter.js');
+        $this->view->registerJsFile('/js/plugins/chartJs/chart.financial.js');
         if (!is_object($this->from)) {
             $this->from = new \DateTime($this->from);
         }
@@ -58,15 +61,14 @@ class CourseGraph extends Widget
     private function _getGraphConfig()
     {
         $config = [
-            'type' => 'line',
+            //'type' => 'line',
+            'type' => 'candlestick',
             'data' => [
                 'labels' => [],
                 'datasets' => []
             ],
             'options' => [
                 'responsive' => false,
-                'legend' => [
-                ],
                 'scales' => [
                     'xAxes' => [[
                         'type' => 'time',
@@ -85,9 +87,6 @@ class CourseGraph extends Widget
                 'plugins' => [
                     'legend' => [
                         'position' => 'top',
-                    ],
-                    'title' => [
-                        'display' => false,
                     ]
                 ]
             ],
