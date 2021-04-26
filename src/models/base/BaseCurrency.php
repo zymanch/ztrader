@@ -11,6 +11,7 @@ namespace backend\models\base;
  * @property string $code
  * @property string $name
  * @property integer $position
+ * @property string $active
  *
  * @property \backend\models\Trader[] $traders
  */
@@ -32,6 +33,7 @@ class BaseCurrency extends \yii\db\ActiveRecord
         return [
             [[BaseCurrencyPeer::CODE, BaseCurrencyPeer::NAME], 'required'],
             [[BaseCurrencyPeer::POSITION], 'integer'],
+            [[BaseCurrencyPeer::ACTIVE], 'string'],
             [[BaseCurrencyPeer::CODE], 'string', 'max' => 3],
             [[BaseCurrencyPeer::NAME], 'string', 'max' => 64],
         ];
@@ -47,6 +49,7 @@ class BaseCurrency extends \yii\db\ActiveRecord
             BaseCurrencyPeer::CODE => 'Code',
             BaseCurrencyPeer::NAME => 'Name',
             BaseCurrencyPeer::POSITION => 'Position',
+            BaseCurrencyPeer::ACTIVE => 'Active',
         ];
     }
     /**

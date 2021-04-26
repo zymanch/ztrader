@@ -35,7 +35,7 @@ class BaseTraderImitation extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [[BaseTraderImitationPeer::TRADER_ID], 'required'],
+            [[BaseTraderImitationPeer::TRADER_ID, BaseTraderImitationPeer::FROM, BaseTraderImitationPeer::TO], 'required'],
             [[BaseTraderImitationPeer::TRADER_ID, BaseTraderImitationPeer::TICK_SIZE, BaseTraderImitationPeer::PID, BaseTraderImitationPeer::PROGRESS], 'integer'],
             [[BaseTraderImitationPeer::FROM, BaseTraderImitationPeer::TO], 'safe'],
             [[BaseTraderImitationPeer::STATUS], 'string'],

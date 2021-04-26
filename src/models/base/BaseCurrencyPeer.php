@@ -8,5 +8,6 @@ class BaseCurrencyPeer  {
     const CODE = "code";
     const NAME = "name";
     const POSITION = "position";
+    const ACTIVE = "active";
 
 }

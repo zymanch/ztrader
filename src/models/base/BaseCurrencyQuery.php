@@ -10,10 +10,12 @@ use backend\models\CurrencyQuery;
  * @method CurrencyQuery filterByCode($value, $criteria = null)
  * @method CurrencyQuery filterByName($value, $criteria = null)
  * @method CurrencyQuery filterByPosition($value, $criteria = null)
+ * @method CurrencyQuery filterByActive($value, $criteria = null)
   * @method CurrencyQuery orderByCurrencyId($order = Criteria::ASC)
   * @method CurrencyQuery orderByCode($order = Criteria::ASC)
   * @method CurrencyQuery orderByName($order = Criteria::ASC)
   * @method CurrencyQuery orderByPosition($order = Criteria::ASC)
+  * @method CurrencyQuery orderByActive($order = Criteria::ASC)
   * @method CurrencyQuery withTraders($params = [])
   * @method CurrencyQuery joinWithTraders($params = null, $joinType = 'LEFT JOIN')
  */

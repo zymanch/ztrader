@@ -7,11 +7,16 @@ class Course {
 
     private static $_cache;
 
-    private function _createTable($tableName)
+    private function _loadTables()
     {
+
         if (self::$_cache===null) {
             self::$_cache = \Yii::$app->db->createCommand('show tables like "course_%"')->queryColumn();
         }
+    }
+    private function _createTable($tableName)
+    {
+        $this->_loadTables();
         if (!in_array($tableName, self::$_cache)) {
             \Yii::$app->db->createCommand('CREATE TABLE `'.$tableName.'` (
                 `course_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -23,6 +28,37 @@ class Course {
             )')->execute();
             self::$_cache[] = $tableName;
         }
+    }
+
+    /**
+     * @param $currencyCode
+     * @return \DateTime|null
+     * @throws \Exception
+     */
+    public function getFirstCurrencyDate($currencyCode)
+    {
+        $this->_loadTables();
+        $firstTable = null;
+        foreach (self::$_cache as $table) {
+            if (strpos($table,'_'.strtolower($currencyCode))==false){
+                continue;
+            }
+            if ($firstTable === null || $table < $firstTable) {
+                $firstTable = $table;
+            }
+        }
+        if (!$firstTable) {
+            return null;
+        }
+        $rate = (new Query)
+            ->from($firstTable)
+            ->orderBy('date ASC')
+            ->limit(1)
+            ->one();
+        if (!$rate) {
+            return null;
+        }
+        return new \DateTime($rate['date']);
     }
 
     public function get($currencyCode, \DateTimeImmutable $date)
