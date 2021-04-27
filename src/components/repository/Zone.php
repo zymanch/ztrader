@@ -48,7 +48,7 @@ class Zone {
     {
         $zones = (new Query)
             ->from($this->_getTableName($currencyCode))
-            ->where($from->format('Y-m-d H:i:s').'<to_date and "'.$to->format('Y-m-d H:i:s').'" >= to_date')
+            ->where('"'.$from->format('Y-m-d H:i:s').'"<to_date and "'.$to->format('Y-m-d H:i:s').'" >= to_date')
             ->orderBy('to_date ASC')
             ->all();
         $result = [];

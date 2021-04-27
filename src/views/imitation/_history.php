@@ -11,18 +11,19 @@ use yii\bootstrap\Html;
  * @var $this \yii\web\View
  */
 $currencyCode = $model->trader->currency->code;
+$from = new DateTimeImmutable($history->date);
 $sellHistory = $history->sellTraderHistory;
 if ($sellHistory) {
     $to = new DateTimeImmutable($sellHistory->date);
-    $right = $to->add(new DateInterval('PT1H'));
+    $diff = $to->getTimestamp() - $from->getTimestamp();
+    $right = $to->add(new DateInterval('PT'.max(1800, round($diff/2)).'S'));
 } else {
     $to = new DateTimeImmutable('now');
     $right = clone $to;
 }
 $fabric = new \backend\components\buyer\Fabric();
 $buyer = $fabric->create($model->trader->buyer_id, $model->trader->currency_id, $model->trader->getBuyerOptions());
-$from = new DateTimeImmutable($history->date);
-$interval = new DateInterval('PT'.(isset($buyer->range_duration) ? $buyer->range_duration : 3600).'S');
+$interval = new DateInterval('PT'.max(3600, round(($to->getTimestamp() - $from->getTimestamp())/2)).'S');
 $interval->invert = true;
 $left = $from->add($interval);
 

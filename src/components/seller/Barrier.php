@@ -9,12 +9,15 @@ class Barrier extends Base {
 
     public $diff_percent;
     public $max_loss_percent;
+    public $sell_on_decrease_percent;
+
 
     public function getAvailableConfigs():array
     {
         return [
             'diff_percent' => ['type'=>'number','step'=>0.01],
             'max_loss_percent' => ['type'=>'number','step'=>0.01],
+            'sell_on_decrease_percent' => ['type'=>'number','step'=>0.01],
         ];
     }
 
@@ -23,6 +26,7 @@ class Barrier extends Base {
         return [
             'diff_percent' => 'Продавать при росте, %',
             'max_loss_percent' => 'Максимальный слив, %',
+            'sell_on_decrease_percent' => 'Продавать при падении от максимума, %',
         ];
 
     }
@@ -40,6 +44,10 @@ class Barrier extends Base {
         $barrier = $buyCourse * (1-$this->max_loss_percent/100);
 
         if ($currentCourse<=$barrier) {
+            return true;
+        }
+        $stats = $course->statistic($this->_currency->code, $buyTime, $now);
+        if ($currentCourse < $stats['max'] * (1-$this->sell_on_decrease_percent/100)) {
             return true;
         }
         return false;

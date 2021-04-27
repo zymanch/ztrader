@@ -68,7 +68,7 @@ class ImitationController extends Controller {
                 $imitation->status = TraderImitation::STATUS_FAILED;
                 $imitation->progress = 0;
                 $imitation->save(false);
-                $this->stdout('Ошибка имитации: '.$e->getMessage(),Console::FG_RED);
+                $this->stdout("\nОшибка имитации: ".$e->getMessage(),Console::FG_RED);
                 $this->stdout($e->getTraceAsString(),Console::FG_RED);
             }
         }
@@ -97,6 +97,7 @@ class ImitationController extends Controller {
         $buyCourse = null;
         $tickCount = ($to->getTimestamp()-$from->getTimestamp())/$imitation->tick_size;
         foreach ($period as $index => $now) {
+            print 'Date '.$now->format('Y-m-d H:i:s')."\r";
             if ($isBuyer) {
                 if ($buyer->isBuyTime($now)) {
                     $buyTime = $now;

@@ -75,7 +75,7 @@ class m210404_052345_detector extends Migration
             COLLATE='utf8mb4_unicode_ci'
             ENGINE=InnoDB");
             $this->execute("INSERT INTO `ztrader`.`seller` (`type`, `name`) VALUES ('none', 'Отсутсвует')");
-            $this->execute("INSERT INTO `ztrader`.`seller` (`type`, `name`) VALUES ('simple', 'Границы')");
+            $this->execute("INSERT INTO `ztrader`.`seller` (`type`, `name`) VALUES ('simple', 'Точное')");
             $this->execute("INSERT INTO `ztrader`.`seller` (`type`, `name`) VALUES ('barrier', 'Потолок')");
             $this->execute("INSERT INTO `ztrader`.`seller` (`type`, `name`) VALUES ('grow', 'Рост')");
 
@@ -90,7 +90,7 @@ class m210404_052345_detector extends Migration
             COLLATE='utf8mb4_unicode_ci'
             ENGINE=InnoDB");
             $this->execute("INSERT INTO `ztrader`.`buyer` (`type`, `name`) VALUES ('none', 'Отсутсвует')");
-            $this->execute("INSERT INTO `ztrader`.`buyer` (`type`, `name`) VALUES ('simple', 'Границы')");
+            $this->execute("INSERT INTO `ztrader`.`buyer` (`type`, `name`) VALUES ('simple', 'Точное')");
             $this->execute("INSERT INTO `ztrader`.`buyer` (`type`, `name`) VALUES ('avg', 'Усредненное')");
             $this->execute("INSERT INTO `ztrader`.`buyer` (`type`, `name`) VALUES ('fall', 'Падение')");
             $this->execute("INSERT INTO `ztrader`.`buyer` (`type`, `name`) VALUES ('zone', 'Зона')");

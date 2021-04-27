@@ -17,8 +17,6 @@ class Fabric {
                 return new Simple($currency, $options);
             case Barrier::TYPE:
                 return new Barrier($currency, $options);
-            case Grow::TYPE:
-                return new Grow($currency, $options);
             default:
                 throw new \InvalidArgumentException('Unknown seller type: '.$seller->type);
         }
