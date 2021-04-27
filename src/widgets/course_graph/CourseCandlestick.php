@@ -17,6 +17,7 @@ class CourseCandlestick extends Base {
 
             'label' => 'Курс '.$currency->name,
             'data' => $this->_getData(),
+            'yAxisID' => 'price',
             'borderColor' => $this->borderColor,
             'backgroundColor'=> $this->backgroundColor
         ]];

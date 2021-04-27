@@ -20,6 +20,7 @@ class Bubble extends Base {
             'type'=> 'bubble',
             'label' => $this->label,
             'data' => [['x' => new JsExpression('new Date("'.$this->date->format('Y-m-d H:i:s').'")'),'y'=>$course,'r' => 10]],
+            'yAxisID' => 'price',
             'borderColor' => $this->borderColor,
             'backgroundColor'=> $this->backgroundColor
         ]];

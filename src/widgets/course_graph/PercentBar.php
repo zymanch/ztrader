@@ -24,6 +24,7 @@ class PercentBar extends Base {
                 'data'  => $this->_getDataMax(),
                 'borderColor' => $this->borderColor,
                 'backgroundColor' => 'rgba(255, 241, 189, 0.0)',
+                'yAxisID' => 'price',
                 'pointRadius'	=> 0,
                 'borderWidth'	=> 1
             ],
@@ -32,6 +33,7 @@ class PercentBar extends Base {
                 'data' => $this->_getDataMin(),
                 'borderColor' => $this->borderColor,
                 'backgroundColor' => $this->backgroundColor,
+                'yAxisID' => 'price',
                 'pointRadius'	=> 0,
                 'borderWidth'	=> 1,
                 'fill' => '-1'

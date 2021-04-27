@@ -18,6 +18,7 @@ class CourseLine extends Base {
             'data' => $this->_getData(),
             'borderColor' => $this->borderColor,
             'backgroundColor'=> $this->backgroundColor,
+            'yAxisID' => 'price',
             'pointRadius'=> 0
         ]];
     }

@@ -47,6 +47,8 @@ class Zone extends Base {
         if (!$this->_isIncZones([$zone])) {
             return false;
         }
+
+        $marketCondition =
         $zones = $zoneRepo->find(
             $this->_currency->code,
             $now->setTimestamp($now->getTimestamp()-100*\backend\components\repository\Zone::ZONE_SIZE_SEC),

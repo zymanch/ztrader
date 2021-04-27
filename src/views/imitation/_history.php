@@ -38,4 +38,5 @@ $widget->addData(new \app\widgets\course_graph\Bubble($widget,['currency'=>'BTC'
 $widget->addData(new \app\widgets\course_graph\Bubble($widget,['currency'=>'BTC','date'=>$to,'label'=>'Продажа']));
 $widget->addData(new \app\widgets\course_graph\CourseLine($widget,['currency'=>'BTC']));
 $widget->addData(new \app\widgets\course_graph\PercentBar($widget,['currency'=>'BTC','percent'=>1,'points'=>[$from, $to]]));
+$widget->addData(new \app\widgets\course_graph\Zones($widget,['currency'=>'BTC']));
 \app\widgets\CourseGraph::end();

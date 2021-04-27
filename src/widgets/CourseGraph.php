@@ -74,7 +74,31 @@ class CourseGraph extends Widget
             ],
             'options' => [
                 'responsive' => false,
+                'tooltips' => [
+                    'callbacks' => [
+                        'label' => new JsExpression('function(tooltipItem, data) {
+                            var label = data.datasets[tooltipItem.datasetIndex].label || "";
+
+                            if (label) {
+                                label += ": ";
+                            }
+                            label += Math.round(tooltipItem.yLabel * 100) / 100;
+                            return label;
+                        }')
+                    ]
+                ],
                 'scales' => [
+                    'yAxes' => [[
+                        'id' => 'price',
+                        'type' => 'linear',
+                        'position' => 'left',
+                        'display' => true,
+                    ],[
+                        'id' => 'little',
+                        'type' => 'linear',
+                        'position' => 'right',
+                        'display' => false,
+                    ]],
                     'xAxes' => [[
                         'type' => 'time',
                         'time' => [
