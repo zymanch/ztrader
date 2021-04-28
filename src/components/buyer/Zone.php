@@ -52,8 +52,8 @@ class Zone extends Base {
         $condition = new MarketCondition;
         $zones = $condition->getZones(
             $this->_currency->code,
-            $now->setTimestamp($now->getTimestamp()-2*\backend\components\repository\Zone::ZONE_SIZE_SEC),
-            $now->setTimestamp($now->getTimestamp())
+            $now->setTimestamp($now->getTimestamp()-3*\backend\components\repository\Zone::ZONE_SIZE_SEC),
+            $now->setTimestamp($now->getTimestamp()-\backend\components\repository\Zone::ZONE_SIZE_SEC)
         );
         $lastZone = end($zones);
         $previousZone = count($zones) >1 ? $zones[count($zones)-2]: null;
