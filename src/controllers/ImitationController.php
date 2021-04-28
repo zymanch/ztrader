@@ -26,7 +26,7 @@ use yii\web\UploadedFile;
 /**
  * Site controller
  */
-class ImitationController extends Controller
+class ImitationController extends base\TradingController
 {
 
 

@@ -8,9 +8,9 @@ use yii\widgets\Breadcrumbs;
 
 ?>
 <?php echo TraderNavigation::widget([
-    'menuItemActive' => 'imitations',
+    'menuItemActive' => 'zone',
     'breadcrumbs' => [
-        'Список имитации',
+        'Список валют',
     ],
-    'content' => $this->render('_index',['imitations'=>$imitations])
+    'content' => $this->render('_index')
 ]);?>

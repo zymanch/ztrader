@@ -77,8 +77,14 @@ class CourseGraph extends Widget
                 'tooltips' => [
                     'callbacks' => [
                         'label' => new JsExpression('function(tooltipItem, data) {
-                            var label = data.datasets[tooltipItem.datasetIndex].label || "";
+                            
+                            var dataset = data.datasets[tooltipItem.datasetIndex],
+                                label = dataset.label || "",
+                                tooltips = dataset.tooltips;
 
+                            if (tooltips && tooltips[tooltipItem.index]) {
+                                return tooltips[tooltipItem.index];
+                            }
                             if (label) {
                                 label += ": ";
                             }

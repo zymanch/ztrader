@@ -1,5 +1,5 @@
 <?php
-namespace backend\controllers;
+namespace backend\controllers\base;
 
 use backend\components\control\WhiteIp;
 use Yii;

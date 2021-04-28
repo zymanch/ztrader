@@ -29,7 +29,7 @@ use yii\web\UploadedFile;
 /**
  * Site controller
  */
-class TraderController extends Controller
+class TraderController extends base\TradingController
 {
 
 

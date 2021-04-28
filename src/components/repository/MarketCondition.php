@@ -5,6 +5,12 @@ namespace backend\components\repository;
 class MarketCondition {
 
 
+    /**
+     * @param $currencyCode
+     * @param \DateTimeInterface $from
+     * @param \DateTimeInterface $to
+     * @return array
+     */
     public function getZones($currencyCode, \DateTimeInterface $from, \DateTimeInterface  $to)
     {
         $zoneRepo = new \backend\components\repository\Zone();
@@ -19,6 +25,7 @@ class MarketCondition {
         );
         $pos = 0;
         $lastZoneIsInc = false;
+        $lastZoneSize = 1;
         $zoneSize = 1;
         $result = [];
         while ($pos < count($zones)) {
@@ -35,18 +42,20 @@ class MarketCondition {
                     'is_full' => count($currentZones) == $zoneSize
                 ];
             }
+            $oldZoneSize = $zoneSize;
             if ($changeZonesSize > 0) {
-                if ($lastZoneIsInc) {
+                if ($lastZoneIsInc && $zoneSize == $lastZoneSize) {
                     $zoneSize = round(max(1, $zoneSize/2));
                 }
                 $lastZoneIsInc = true;
             } else {
-                if (!$lastZoneIsInc) {
+                if (!$lastZoneIsInc && $zoneSize == $lastZoneSize) {
                     $zoneSize = round(min(8, $zoneSize*2));
                 }
                 $lastZoneIsInc = false;
             }
 
+            $lastZoneSize = $oldZoneSize;
             $pos+=$zoneSize;
         }
         return $result;

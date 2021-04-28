@@ -4,6 +4,7 @@ namespace backend\components\buyer;
 
 use backend\components\repository\Course;
 use backend\components\repository\Currency;
+use backend\components\repository\MarketCondition;
 
 class Zone extends Base {
 
@@ -48,31 +49,15 @@ class Zone extends Base {
             return false;
         }
 
-        $marketCondition =
-        $zones = $zoneRepo->find(
+        $condition = new MarketCondition;
+        $zones = $condition->getZones(
             $this->_currency->code,
-            $now->setTimestamp($now->getTimestamp()-100*\backend\components\repository\Zone::ZONE_SIZE_SEC),
-            $now->setTimestamp($now->getTimestamp()-\backend\components\repository\Zone::ZONE_SIZE_SEC)
+            $now->setTimestamp($now->getTimestamp()-2*\backend\components\repository\Zone::ZONE_SIZE_SEC),
+            $now->setTimestamp($now->getTimestamp())
         );
-        $pos = 0;
-        $lastZoneIsInc = false;
-        $zoneSize = 1;
-        while ($pos < count($zones)) {
-            $currentZones = array_slice($zones, $pos, $zoneSize);
-            if ($this->_isIncZones($currentZones)) {
-                if ($lastZoneIsInc) {
-                    $zoneSize = round(max(1, $zoneSize/2));
-                }
-                $lastZoneIsInc = true;
-            } else {
-                if (!$lastZoneIsInc) {
-                    $zoneSize = round(min(8, $zoneSize*2));
-                }
-                $lastZoneIsInc = false;
-            }
-            $pos+=$zoneSize;
-        }
-        if ($zoneSize > 1 || !$lastZoneIsInc) {
+        $lastZone = end($zones);
+        $previousZone = count($zones) >1 ? $zones[count($zones)-2]: null;
+        if (!$previousZone || $previousZone['change']<0 || $lastZone['size'] > 1 || $lastZone['change'] < 0) {
             return false;
         }
         $from = $now->setTimestamp($now->getTimestamp()-$this->range_duration);
