@@ -14,7 +14,7 @@ class MarketCondition {
     public function getZones($currencyCode, \DateTimeInterface $from, \DateTimeInterface  $to)
     {
         $zoneRepo = new \backend\components\repository\Zone();
-        $zoneFrom = \DateTimeImmutable::createFromFormat('U', $from->getTimestamp()-100*\backend\components\repository\Zone::ZONE_SIZE_SEC, $from->getTimezone());
+        $zoneFrom = \DateTimeImmutable::createFromFormat('U', $from->getTimestamp()-\backend\components\repository\Zone::ZONE_SIZE_SEC, $from->getTimezone());
         $zoneFrom = $zoneFrom->setTimezone($from->getTimezone());
         $zoneTo = \DateTimeImmutable::createFromFormat('U', $to->getTimestamp()+\backend\components\repository\Zone::ZONE_SIZE_SEC, $to->getTimezone());
         $zoneTo = $zoneTo->setTimezone($to->getTimezone());
@@ -23,56 +23,29 @@ class MarketCondition {
             $zoneFrom,
             $zoneTo
         );
-        $pos = 0;
-        $lastZoneIsInc = false;
-        $lastZoneSize = 1;
-        $zoneSize = 1;
         $result = [];
-        while ($pos < count($zones)) {
-            $currentZones = array_slice($zones, $pos, $zoneSize);
-            $changeZonesSize = $this->_getChangeZonesSize($currentZones);
-            $fromDate = reset($currentZones)->from_date;
-            $toDate = end($currentZones)->to_date;
-            if ($toDate->getTimestamp() > $from->getTimestamp()) {
-                $result[] = [
-                    'from' => $fromDate->getTimestamp() < $from->getTimestamp() ? $from : $fromDate,
-                    'to' => $toDate->getTimestamp() > $to->getTimestamp() ? $to : $toDate,
-                    'change' => $changeZonesSize,
-                    'size' => $zoneSize,
-                    'is_full' => count($currentZones) == $zoneSize
+        foreach ($zones as $zone) {
+            if (!isset($groups[$zone->group_id])) {
+                $result[$zone->group_id] = [
+                    'from' => $zone->from_date,
+                    'to' => $zone->to_date,
+                    'change' => $zone->trend,
+                    'size' => $zone->size,
                 ];
             }
-            $oldZoneSize = $zoneSize;
-            if ($changeZonesSize > 0) {
-                if ($lastZoneIsInc && $zoneSize == $lastZoneSize) {
-                    $zoneSize = round(max(1, $zoneSize/2));
-                }
-                $lastZoneIsInc = true;
-            } else {
-                if (!$lastZoneIsInc && $zoneSize == $lastZoneSize) {
-                    $zoneSize = round(min(8, $zoneSize*2));
-                }
-                $lastZoneIsInc = false;
+            $result[$zone->group_id]['to'] = $zone->to_date;
+            $result[$zone->group_id]['change']+= $zone->trend;
+        }
+
+        foreach ($result as $index => $zone) {
+            if ($zone['to']->getTimestamp() > $to->getTimestamp() ) {
+                $result[$index]['to'] = clone $to;
             }
-
-            $lastZoneSize = $oldZoneSize;
-            $pos+=$zoneSize;
+            if ($zone['from']->getTimestamp() < $from->getTimestamp() ) {
+                $result[$index]['from'] = clone $from;
+            }
         }
-        return $result;
+        return array_values($result);
     }
 
-
-    /**
-     * @param \backend\components\repository\entry\Zone[] $zones
-     * @return bool
-     */
-    private function _getChangeZonesSize($zones)
-    {
-        if (!$zones) {
-            return 0;
-        }
-        $from = reset($zones)->from_course;
-        $to = end($zones)->to_course;
-        return 100*($to-$from)/$from;
-    }
 }

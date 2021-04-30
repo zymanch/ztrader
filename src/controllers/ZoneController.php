@@ -91,7 +91,6 @@ class ZoneController extends base\TradingController
         foreach ($zones as $zone) {
             $currentIsBuy = $zone['change'] > 0 && $zone['size']==1;;
             if ($lastIsBuy && $currentIsBuy) {
-                print '<pre>';var_dump($p, $zone);die();
                 if (!$isAdded) {
                     $result[] = $zone;
                 }
