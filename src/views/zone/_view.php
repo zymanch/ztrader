@@ -12,9 +12,8 @@
     $currencyCode = $currency->code;
     $from = $zone['from'];
     $to = $zone['to'];
-    $diff = $to->getTimestamp() - $from->getTimestamp();
-    $right = $to->add(new DateInterval('PT'.max(1800, round($diff/2)).'S'));
-    $interval = new DateInterval('PT'.max(3600, round(($to->getTimestamp() - $from->getTimestamp())/2)).'S');
+    $right = $to->add(new DateInterval('PT3H'));
+    $interval = new DateInterval('PT3H');
     $interval->invert = true;
     $left = $from->add($interval);
 

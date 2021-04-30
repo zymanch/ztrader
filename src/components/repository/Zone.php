@@ -122,7 +122,7 @@ class Zone {
         $size = $lastZone->size;
         $groupId = $lastZone->group_id;
         $groupPos = $lastZone->group_pos+1;
-        $trend = 100*$zone->avg_course/$lastZone->avg_course-100;
+        $trend = $this->_getTrend($zone, $lastZone);
         if ($groupPos <= $size) {
             return [$size, $groupId, $groupPos, $trend];
         }
@@ -152,6 +152,21 @@ class Zone {
             $size = max(1, round($lastSize/2));
         }
         return [$size, $groupId, $groupPos, $trend];
+    }
+
+    private function _getTrend(entry\Zone $currentZone, entry\Zone $previousZone) {
+        //return 100*$currentZone->avg_course/$previousZone->avg_course-100;
+        $isMinIncreased = $currentZone->min_course > $previousZone->min_course;
+        $isMaxIncreased = $currentZone->max_course > $previousZone->max_course;
+        if ($isMaxIncreased !== $isMinIncreased) {
+            return 100*$currentZone->to_course / $currentZone->from_course - 100;
+        }
+        // Восходящий тренд
+        if ($isMinIncreased) {
+            return abs(100 * $currentZone->min_course / $previousZone->min_course - 100);
+        }
+        // Низходящий тренд
+        return -abs(100 * $currentZone->max_course / $previousZone->max_course - 100);
     }
 
     private function _getTableName($currencyCode)
