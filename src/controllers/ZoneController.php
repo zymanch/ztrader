@@ -5,7 +5,10 @@ namespace backend\controllers;
 
 use ActiveGenerator\Criteria;
 use backend\components\buyer\Fabric;
+use backend\components\repository\MarketCondition;
 use backend\models\BuyerQuery;
+use backend\models\Currency;
+use backend\models\CurrencyQuery;
 use backend\models\forms\UploadReceiptForm;
 use backend\models\Receipt;
 use backend\models\ReceiptQuery;
@@ -58,14 +61,46 @@ class ZoneController extends base\TradingController
         return $this->render('index');
     }
 
-    public function actionView($id)
+    public function actionView($id, $date)
     {
-        $trader = TraderQuery::model()->filterByTraderId($id)->one();
-        if (!$trader) {
-            throw new NotFoundHttpException('Трейдер не найден');
+        $currency = CurrencyQuery::model()->filterByCurrencyId($id)->one();
+        if (!$currency) {
+            throw new NotFoundHttpException('Валюта не найден');
         }
+        $zones = $this->_getZones($currency, $date);
         return $this->render('view', [
-            'model' => $trader
+            'currency' => $currency,
+            'date' => $date,
+            'zones' => array_splice($zones,0,10)
         ]);
+    }
+
+    private function _getZones(Currency $currency, $date) {
+        $from = new \DateTimeImmutable($date.'-01 00:00:00');
+        $to = $from->modify('+1month')->modify('-1 second');
+        $condition = new MarketCondition;
+        $zones = $condition->getZones(
+            $currency->code,
+            $from,
+            $to
+        );
+        $lastIsBuy = false;
+        $isAdded = false;
+        $result = [];
+        $p = null;
+        foreach ($zones as $zone) {
+            $currentIsBuy = $zone['change'] > 0 && $zone['size']==1;;
+            if ($lastIsBuy && $currentIsBuy) {
+                print '<pre>';var_dump($p, $zone);die();
+                if (!$isAdded) {
+                    $result[] = $zone;
+                }
+            } else {
+                $isAdded = false;
+            }
+            $lastIsBuy = $currentIsBuy;
+            $p = $zone;
+        }
+        return $result;
     }
 }

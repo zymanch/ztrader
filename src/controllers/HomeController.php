@@ -8,7 +8,7 @@ use yii\filters\AccessControl;
 /**
  * Site controller
  */
-class HomeController extends Controller
+class HomeController extends base\Controller
 {
 
 

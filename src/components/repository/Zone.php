@@ -23,6 +23,10 @@ class Zone {
                 `min_course` DECIMAL(16,2) UNSIGNED NOT NULL,
                 `max_course` DECIMAL(16,2) UNSIGNED NOT NULL,
                 `avg_course` DECIMAL(16,2) UNSIGNED NOT NULL,
+                `trend` DECIMAL(6,2) NOT NULL,
+                `group_id` INT(10) UNSIGNED NOT NULL,
+                `group_pos` TINYINT UNSIGNED NOT NULL,
+                `size` TINYINT UNSIGNED NOT NULL,
                 PRIMARY KEY (`zone_id`),
                 INDEX `dates` (`to_date`,`from_date`)
             )')->execute();
@@ -44,6 +48,12 @@ class Zone {
         return null;
     }
 
+    /**
+     * @param $currencyCode
+     * @param \DateTimeInterface $from
+     * @param \DateTimeInterface $to
+     * @return entry\Zone[]
+     */
     public function find($currencyCode, \DateTimeInterface $from, \DateTimeInterface $to)
     {
         $zones = (new Query)
@@ -77,14 +87,7 @@ class Zone {
     {
         $tableName = $this->_getTableName($currencyCode);
         $this->_createTable($tableName);
-//        $exists = (new Query)
-//            ->from($tableName)
-//            ->where('date="'.$date->format('Y-m-d H:i:s').'"')
-//            ->andWhere('course='.round($course, 2))
-//            ->count();
-//        if ($exists) {
-//            return;
-//        }
+        list($size, $groupId, $groupPos, $trend) = $this->_detectGroup($currencyCode, $zone);
         $db = \Yii::$app->db;
         $db->createCommand()->insert($tableName,[
             'from_date' => $zone->from_date->format('Y-m-d H:i:s'),
@@ -94,9 +97,62 @@ class Zone {
             'min_course' => round($zone->min_course,2),
             'max_course' => round($zone->max_course,2),
             'avg_course' => round($zone->avg_course,2),
+            'size' => $size,
+            'group_id' => $groupId,
+            'group_pos' => $groupPos,
+            'trend' => $trend,
         ])->execute();
     }
 
+    private function _detectGroup($currencyCode, entry\Zone $zone) {
+
+        $lastZones = $this->find(
+            $currencyCode,
+            $zone->to_date->modify('-'.(self::ZONE_SIZE_SEC*10).' seconds'),
+            $zone->to_date->modify('-'.(self::ZONE_SIZE_SEC*1).' seconds')
+        );
+        $size = 2;
+        $groupId = 1;
+        $groupPos = 1;
+        $trend = 0;
+        $lastZone = end($lastZones);
+        if (!$lastZone) {
+            return [$size, $groupId, $groupPos, $trend];
+        }
+        $size = $lastZone->size;
+        $groupId = $lastZone->group_id;
+        $groupPos = $lastZone->group_pos+1;
+        $trend = 100*$zone->avg_course/$lastZone->avg_course-100;
+        if ($groupPos <= $size) {
+            return [$size, $groupId, $groupPos, $trend];
+        }
+        $groupId++;
+        $groupPos = 1;
+
+        $previousTrends = [];
+        $previousSize = 0;
+        $lastTrends = [];
+        $lastSize = $size;
+        foreach ($lastZones as $previousZone) {
+            if ($previousZone->group_id == $groupId-2) {
+                $previousTrends[] = $previousZone->trend;
+                $previousSize = $previousZone->size;
+            }
+            if ($previousZone->group_id == $groupId-1) {
+                $lastTrends[] = $previousZone->trend;
+            }
+        }
+        $previousTrend = array_sum($previousTrends);
+        $lastTrend = array_sum($lastTrends);
+
+        if ($previousTrend < 0 && $lastTrend < 0 && $previousSize == $lastSize) {
+            $size = min(8, $lastSize*2);
+        }
+        if ($previousTrend > 0 && $lastTrend > 0 && $previousSize == $lastSize) {
+            $size = max(1, round($lastSize/2));
+        }
+        return [$size, $groupId, $groupPos, $trend];
+    }
 
     private function _getTableName($currencyCode)
     {

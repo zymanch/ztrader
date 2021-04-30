@@ -10,7 +10,7 @@ use yii\widgets\Breadcrumbs;
 <?php echo TraderNavigation::widget([
     'menuItemActive' => 'zone',
     'breadcrumbs' => [
-        'Список валют',
+        'Список доступных зон',
     ],
     'content' => $this->render('_index')
 ]);?>

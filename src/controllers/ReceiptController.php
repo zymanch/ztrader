@@ -25,7 +25,7 @@ use yii\web\UploadedFile;
 /**
  * Site controller
  */
-class ReceiptController extends Controller
+class ReceiptController extends base\Controller
 {
 
 
