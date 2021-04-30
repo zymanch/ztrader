@@ -25,12 +25,13 @@ class MarketCondition {
         );
         $result = [];
         foreach ($zones as $zone) {
-            if (!isset($groups[$zone->group_id])) {
+            if (!isset($result[$zone->group_id])) {
                 $result[$zone->group_id] = [
                     'from' => $zone->from_date,
                     'to' => $zone->to_date,
                     'change' => $zone->trend,
                     'size' => $zone->size,
+                    'group'=>$zone->group_id
                 ];
             }
             $result[$zone->group_id]['to'] = $zone->to_date;

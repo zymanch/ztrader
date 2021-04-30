@@ -87,12 +87,20 @@ class ZoneController extends base\TradingController
         $previousIsBuy = false;
         $lastIsBuy = false;
         $isAdded = false;
+        $addedTimes = 0;
         $result = [];
         foreach ($zones as $zone) {
             $currentIsBuy = $zone['change'] > 0 && $zone['size']==1;;
             if ($previousIsBuy && $lastIsBuy && $currentIsBuy) {
-                if (!$isAdded) {
+                if ($isAdded) {
+                    if ($addedTimes < 5) {
+                        $result[count($result) - 1]['to'] = $zone['to'];
+                    }
+                    $addedTimes++;
+                } else {
                     $result[] = $zone;
+                    $isAdded = true;
+                    $addedTimes = 1;
                 }
             } else {
                 $isAdded = false;

@@ -4,10 +4,8 @@
  * @var $currency \backend\models\Currency
  */
 
-
 ?>
-<?php foreach ($zones as $zone):?>
-
+<?php foreach ($zones as $index => $zone):?>
 <?php
     $currencyCode = $currency->code;
     $from = $zone['from'];

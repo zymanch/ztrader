@@ -51,7 +51,8 @@ class Zones extends Base {
             $isAdded = false;
             foreach ($zones as $zone) {
                 if ($zone['from']->getTimestamp()<=$date->getTimestamp() && $date->getTimestamp()<=$zone['to']->getTimestamp()) {
-                    $this->_data[] = round($zone['change'],2);
+                    $lastData = round($zone['change'],2);
+                    $this->_data[] = $lastData;
                     $lastTooltip = 'Изменение на '.round($zone['change'],2)."%\n".
                                          'Размер '.gmdate('H:i',$zone['size']*Zone::ZONE_SIZE_SEC).' ('.$zone['size'].')';
                     $this->_tooltips[] = $lastTooltip;

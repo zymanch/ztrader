@@ -122,7 +122,7 @@ class Zone {
         $size = $lastZone->size;
         $groupId = $lastZone->group_id;
         $groupPos = $lastZone->group_pos+1;
-        $trend = $this->_getTrend($zone, $lastZone);
+        $trend = $this->_getTrend3($currencyCode, $zone, $lastZone);
         if ($groupPos <= $size) {
             return [$size, $groupId, $groupPos, $trend];
         }
@@ -154,12 +154,56 @@ class Zone {
         return [$size, $groupId, $groupPos, $trend];
     }
 
-    private function _getTrend(entry\Zone $currentZone, entry\Zone $previousZone) {
+    // Отношщение положительных и отрицательных тиков
+    private function _getTrend($currencyCode, entry\Zone $currentZone, entry\Zone $previousZone) {
+        $repo = new Course();
+        $tickets = $repo->find(
+            $currencyCode,
+            $currentZone->from_date,
+            $currentZone->to_date
+        );
+        $last = null;
+        $incs = 0;
+        $decs = 0;
+        foreach ($tickets as $ticket) {
+            if ($last !== null) {
+                if ($ticket['course'] > $last) {
+                    $incs++;
+                } else if ($ticket['course'] < $last) {
+                    $decs++;
+                }
+            }
+            $last = $ticket['course'];
+        }
+        return $decs ? 100*$incs/$decs - 100 : 100;
+    }
+
+    // отношение среднего в первой половине и второй
+    private function _getTrend3($currencyCode, entry\Zone $currentZone, entry\Zone $previousZone) {
+        $repo = new Course();
+        $ticks = $repo->find(
+            $currencyCode,
+            $currentZone->from_date,
+            $currentZone->to_date
+        );
+        $courses = array_map(function($tick) {
+            return $tick['course'];
+        }, $ticks);
+        $firstCourses = array_splice($courses, 0,round(count($courses)/2));
+
+        $firstAvg = array_sum($firstCourses)/count($firstCourses);
+        $lastAvg = array_sum($courses)/count($courses);
+        return 100*$lastAvg/$firstAvg - 100;
+    }
+
+
+    // минимум и максимум сместились в одну сторону
+    private function _getTrend2($currencyCode, entry\Zone $currentZone, entry\Zone $previousZone) {
         //return 100*$currentZone->avg_course/$previousZone->avg_course-100;
         $isMinIncreased = $currentZone->min_course > $previousZone->min_course;
         $isMaxIncreased = $currentZone->max_course > $previousZone->max_course;
         if ($isMaxIncreased !== $isMinIncreased) {
-            return 100*$currentZone->to_course / $currentZone->from_course - 100;
+            return 0; //100*$currentZone->to_course / $currentZone->from_course - 100;
         }
         // Восходящий тренд
         if ($isMinIncreased) {
@@ -167,6 +211,65 @@ class Zone {
         }
         // Низходящий тренд
         return -abs(100 * $currentZone->max_course / $previousZone->max_course - 100);
+    }
+
+
+    // недоделаная попытка с экстремумами
+    private function _getTrend4($currencyCode, entry\Zone $currentZone, entry\Zone $previousZone) {
+        $repo = new Course();
+        $tickets = $repo->find(
+            $currencyCode,
+            $currentZone->from_date,
+            $currentZone->to_date
+        );
+        $extremums = [];
+        $lastCourse = reset($tickets)['course'];
+        $lastExtremum = reset($tickets)['course'];
+        $isIncrease = $tickets[2]['course'] > $lastCourse;
+        for ($i = 0; $i<count($tickets); $i+=60) {
+            $course = $tickets[$i]['course'];
+            if ($isIncrease) {
+                if ($course < $lastCourse) {
+                    $extremums[] = $lastCourse/$lastExtremum - 1;
+                    $lastExtremum = $lastCourse;
+                    $isIncrease = false;
+                }
+            } else {
+                if ($course > $lastCourse) {
+                    $extremums[] = $lastCourse/$lastExtremum - 1;
+                    $lastExtremum = $lastCourse;
+                    $isIncrease = true;
+                }
+            }
+            $lastCourse = $course;
+        }
+        $extremums[] = $lastCourse/$lastExtremum - 1;
+
+        $extremums = $this->_collapseExtremums($extremums);
+        //$extremums = array_values($extremums);
+        print implode("\n",$extremums);die();
+    }
+
+    private function _collapseExtremums($extremums) {
+        $isCollapsed = false;
+
+        for ($i=2;$i<count($extremums);$i++) {
+            if ((abs($extremums[$i-1]) < 0.5*abs($extremums[$i-2])) && (abs($extremums[$i-1]) < 0.5*abs($extremums[$i]))) {
+                $extremums[$i]=(1+$extremums[$i-2])*(1+$extremums[$i-1])*(1+$extremums[$i])-1;
+                unset($extremums[$i-1]);
+                unset($extremums[$i-2]);
+                $isCollapsed = true;
+            }
+        }
+        $extremums=array_values($extremums);
+        for ($i=1;$i<count($extremums);$i++) {
+            if (($extremums[$i]>0) ===($extremums[$i-1]>0)) {
+                $extremums[$i]=(1+$extremums[$i-1])*(1+$extremums[$i])-1;
+                unset($extremums[$i-1]);
+            }
+        }
+        $extremums=array_values($extremums);
+        return $isCollapsed ? $this->_collapseExtremums($extremums) : $extremums;
     }
 
     private function _getTableName($currencyCode)
